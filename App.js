@@ -1,21 +1,42 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+// import { StatusBar } from 'expo-status-bar';
+import React, { useEffect, useState, Fragment } from 'react';
+import { AppLoading } from 'expo';
+import * as Font from 'expo-font';
+import { Ionicons } from '@expo/vector-icons';
+import { StyleSheet, Text, ScrollView } from 'react-native';
+
+import TopNav from './components/TopNav';
 
 export default function App() {
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    async function loading () {
+      await Font.loadAsync({
+        Roboto: require('native-base/Fonts/Roboto.ttf'),
+        Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
+        ...Ionicons.font,
+      });
+      setIsReady(true);
+    }
+
+    loading();
+  }, []);
+
+  if (!isReady) {
+    return <AppLoading />;
+  }
+
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Fragment>
+
+      <TopNav />
+      <ScrollView>
+        <Text>Welcome!</Text>
+      </ScrollView>
+    </Fragment>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
