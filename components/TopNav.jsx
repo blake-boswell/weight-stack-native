@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import menuIcon from '../images/menu.png';
 // import { Button } from 'native-base';
 
-const TopNav = ({}) => {
+const TopNav = ({title = 'Weight Stack'}) => {
 
   const toggleMenu = () => {
     console.log('Openning Menu...')
@@ -13,14 +13,14 @@ const TopNav = ({}) => {
     <View style={styles.navContainer}>
       <View style={styles.navContent}>
         <View style={styles.navLeft}>
-          {/* <Pressable
+          <Pressable
             onPress={toggleMenu}
-          > */}
-            {/* <Image style={styles.menuIcon} source={menuIcon}/> */}
-          {/* </Pressable> */}
+          >
+            <Image style={styles.menuIcon} source={menuIcon}/>
+          </Pressable>
         </View>
         <View style={styles.navMiddle}>
-          <Text style={styles.navTitle}>Weight Stack</Text>
+          <Text style={styles.navTitle}>{title}</Text>
         </View>
         <View style={styles.navRight}>
         </View>
@@ -39,6 +39,11 @@ const styles = StyleSheet.create({
     height: 100,
     paddingTop: 30,
     backgroundColor: '#247BA0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,  
+    elevation: 5,
   },
   navContent: {
     flex: 1,
@@ -50,7 +55,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     width: '25%',
-    paddingLeft: 16,
+    paddingLeft: 24,
   },
   navMiddle: {
     justifyContent: 'center',
@@ -69,6 +74,7 @@ const styles = StyleSheet.create({
   },
   menuIcon: {
     height: 25,
+    tintColor: '#fff',
   }
 });
 
