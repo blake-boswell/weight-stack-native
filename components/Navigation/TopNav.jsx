@@ -1,23 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
-import menuIcon from '../images/menu.png';
-// import { Button } from 'native-base';
+import { StyleSheet, Text, View } from 'react-native';
 
-const TopNav = ({title = 'Weight Stack'}) => {
-
-  const toggleMenu = () => {
-    console.log('Openning Menu...')
-  }
+const TopNav = ({title = 'Weight Stack', leftButton}) => {
 
   return (
     <View style={styles.navContainer}>
       <View style={styles.navContent}>
         <View style={styles.navLeft}>
-          <Pressable
-            onPress={toggleMenu}
-          >
-            <Image style={styles.menuIcon} source={menuIcon}/>
-          </Pressable>
+          {leftButton}
         </View>
         <View style={styles.navMiddle}>
           <Text style={styles.navTitle}>{title}</Text>

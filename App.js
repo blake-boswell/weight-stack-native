@@ -1,4 +1,3 @@
-// import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState, Fragment } from 'react';
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
@@ -7,13 +6,11 @@ import { StyleSheet, Text, ScrollView, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Feather } from '@expo/vector-icons';
 
-import TopNav from './components/TopNav';
 import BottomTabBar from './components/BottomTabBar';
-import Home from './screens/Home';
-import Logs from './screens/Logs';
-import Program from './screens/Program';
+import Home from './screens/Home/Home';
+import Logs from './screens/Logs/Logs';
+import Program from './screens/Program/Program';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -42,9 +39,6 @@ export default function App() {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <TopNav />
-        <ScrollView style={styles.contentContainer}>
-        </ScrollView>
         <Tab.Navigator initialRouteName="Logs" tabBar={props => <BottomTabBar {...props} />}>
           <Tab.Screen name="Home" component={Home} />
           <Tab.Screen name="Logs" component={Logs} />

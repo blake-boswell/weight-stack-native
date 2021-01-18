@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
-import Design from '../utils/Design';
+import { blue } from '../utils/Design';
 
 const Icon = ({name, isFocused, color='#222', size}) => {
 
@@ -10,19 +10,19 @@ const Icon = ({name, isFocused, color='#222', size}) => {
     case 'Home':
       return (
         <View style={{alignItems: 'center'}}>
-          <Feather name="home" size={size} color={isFocused ? Design.blue : color} />
+          <Feather name="home" size={size} color={isFocused ? blue : color} />
         </View>
       );
     case 'Logs':
       return (
         <View style={{alignItems: 'center'}}>
-          <Feather name="book-open" size={size} color={isFocused ? Design.blue : color} />
+          <Feather name="book-open" size={size} color={isFocused ? blue : color} />
         </View>
       );
     case 'Program':
       return (
         <View style={{alignItems: 'center'}}>
-          <Feather name="calendar" size={size} color={isFocused ? Design.blue : color} />
+          <Feather name="calendar" size={size} color={isFocused ? blue : color} />
         </View>
       );
     default:
@@ -82,12 +82,12 @@ const BottomTabBar = ({state, descriptors, navigation}) => {
             onLongPress={onLongPress}
             style={{ flex: 1, paddingTop: 6 }}
           >
-          <View style={{alignItems: 'center'}}>
-            <Icon name={route.name} size={24} isFocused={isFocused} />
-            <Text style={{ color: isFocused ? Design.blue : '#222' }}>
-              {label}
-            </Text>
-          </View>
+            <View style={{alignItems: 'center'}}>
+              <Icon name={route.name} size={24} isFocused={isFocused} />
+              <Text style={{ color: isFocused ? blue : '#222' }}>
+                {label}
+              </Text>
+            </View>
           </Pressable>
         );
       })}
