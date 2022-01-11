@@ -13,8 +13,11 @@
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
     "expo": "^39.0.0",
+    "expo-auth-session": "~2.0.0",
     "expo-font": "~8.3.0",
+    "expo-secure-store": "~9.2.0",
     "expo-status-bar": "~1.0.2",
+    "jwt-decode": "^3.1.2",
     "native-base": "^2.13.14",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -25,11 +28,14 @@
     "react-native-screens": "~2.10.1",
     "react-native-svg": "12.1.0",
     "react-native-svg-transformer": "^0.14.3",
-    "react-native-web": "~0.13.7"
+    "react-native-web": "^0.17.5",
+    "set-cookie-parser": "^2.4.8",
+    "expo-random": "~9.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.7",
-    "babel-preset-expo": "^8.3.0"
+    "babel-preset-expo": "^8.3.0",
+    "prettier": "2.5.1"
   },
   "private": true
 }

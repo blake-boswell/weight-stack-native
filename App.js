@@ -7,10 +7,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import BottomTabBar from './components/BottomTabBar';
+import BottomTabBar from './components/Navigation/BottomNav/BottomTabBar';
 import Home from './screens/Home/Home';
 import Logs from './screens/Logs/Logs';
 import Program from './screens/Program/Program';
+import Login from './screens/Authentication/Login';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -41,7 +42,6 @@ export default function App() {
       <View style={styles.container}>
         <Tab.Navigator initialRouteName="Logs" tabBar={props => <BottomTabBar {...props} />}>
           <Tab.Screen name="Home" component={Home} />
-          <Tab.Screen name="Logs" component={Logs} />
           <Tab.Screen name="Program" component={Program} />
         </Tab.Navigator>
       </View>

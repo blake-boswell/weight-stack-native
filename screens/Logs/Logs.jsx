@@ -1,9 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Feather } from '@expo/vector-icons';
 
-import TopNav from '../../components/Navigation/TopNav';
-import LeftNavButton from '../../components/Navigation/LeftNavButton';
+import TopNav from '../../components/Navigation/TopNav/TopNav';
+import BackButton from '../../components/Navigation/TopNav/BackButton';
 import SessionList from './SessionList';
 import Session from './Session';
 
@@ -28,9 +27,8 @@ const Logs = ({}) => {
         title={ title }
         leftButton={
           previous ? 
-            <LeftNavButton
+            <BackButton
               handleBtnPress={navigation.goBack}
-              icon={<Feather name="arrow-left" size={24} color="#fff" />}
             />
           : undefined
         }
@@ -51,7 +49,7 @@ const Logs = ({}) => {
         name="SessionList"
         component={SessionList}
         options={{ 
-          title: 'Logs',
+          title: '',
         }}
        />
       <Stack.Screen
