@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, Platform, StyleSheet } from 'react-native';
 
 import * as AuthSession from 'expo-auth-session';
@@ -12,14 +12,13 @@ import jwtDecode from 'jwt-decode';
 //
 // You can open this app in the Expo client and check your logs to find out your redirect URL.
 
-const auth0ClientId = "9mesOdnRwXzfGBO6pSdvhLtNHMcttVYI";
-const authorizationEndpoint = "https://weight-stack.us.auth0.com/authorize";
+const auth0ClientId = '9mesOdnRwXzfGBO6pSdvhLtNHMcttVYI';
+const authorizationEndpoint = 'https://weight-stack.us.auth0.com/authorize';
 
 const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 
 const Login = ({}) => {
-
   // Auth
   const [name, setName] = useState(null);
 
@@ -36,29 +35,17 @@ const Login = ({}) => {
         nonce: 'nonce',
       },
     },
-    { authorizationEndpoint }
+    { authorizationEndpoint },
   );
-
-  // Retrieve the redirect URL, add this to the callback URL list
-  // of your Auth0 application.
-  console.log(`Redirect URL: ${redirectUri}`);
 
   useEffect(() => {
     if (result) {
-      if (result.error) {
-        Alert.alert(
-          'Authentication error',
-          result.params.error_description || 'something went wrong'
-        );
-        return;
-      }
       if (result.type === 'success') {
         // Retrieve the JWT token and decode it
         const jwtToken = result.params.id_token;
-        const decoded = jwtDecode(jwtToken);
+        const decoded: any = jwtDecode(jwtToken);
 
         const { name } = decoded;
-        console.log(decoded);
         setName(name);
       }
     }
@@ -84,7 +71,8 @@ const Login = ({}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    display: 'flex',
+    height: '100%',
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',

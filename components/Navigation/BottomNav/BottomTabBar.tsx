@@ -1,15 +1,29 @@
 import React, { useMemo, useRef, useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, LayoutChangeEvent } from 'react-native';
 import ActionButton from './ActionButton';
 import HomeButton from './HomeButton';
 import ProgramButton from './ProgramButton';
 import { blue } from '../../../utils/Design';
 import Animated, { EasingNode } from 'react-native-reanimated';
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import { BottomTabDescriptor } from '@react-navigation/bottom-tabs/lib/typescript/src/types';
 
 const lineWidth = 75;
 const buttonSize = 38;
 
-const BottomTabBar = ({ state, descriptors, navigation }) => {
+interface Routes {
+  [name: string]: {
+    key: string;
+    isFocused: boolean;
+    options: BottomTabDescriptor;
+  };
+}
+
+const BottomTabBar = ({
+  state,
+  descriptors,
+  navigation,
+}: BottomTabBarProps) => {
   const [startX, setStartX] = useState(0);
   const [endX, setEndX] = useState(0);
   const lineAnim = useRef(
@@ -26,15 +40,8 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
     }).start();
   }, [startX]);
 
-  const focusedOptions = descriptors[state.routes[state.index].key].options;
-  console.log(state.routes[state.index].name);
-
-  if (focusedOptions.tabBarVisible === false) {
-    return null;
-  }
-
-  const routes = useMemo(() => {
-    let routes = {};
+  const routes = useMemo((): Routes => {
+    let routes: Routes = {};
     state.routes.forEach((route, index) => {
       const { name, key } = route;
       routes[name] = {
@@ -46,7 +53,7 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
     return routes;
   }, [state, descriptors]);
 
-  const onNavBtnPress = routeName => {
+  const onNavBtnPress = (routeName: string) => {
     const isFocused = routes[routeName].isFocused;
     const target = routes[routeName].key;
 
@@ -75,13 +82,13 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
     }
   };
 
-  const getStartMeasurements = e => {
+  const getStartMeasurements = (e: LayoutChangeEvent) => {
     const { x, width } = e.nativeEvent.layout;
     const offsetStart = width / 2 - lineWidth / 2;
     setStartX(offsetStart);
   };
 
-  const getEndMeasurements = e => {
+  const getEndMeasurements = (e: LayoutChangeEvent) => {
     const { x, width } = e.nativeEvent.layout;
     const offsetEnd = x + width / 2 - lineWidth / 2;
     setEndX(offsetEnd);
@@ -107,7 +114,6 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
         }}
         onLayout={getStartMeasurements}
         isFocused={routes['Home'].isFocused}
-        options={routes['Home'].options}
         style={{ ...styles.button }}
       />
       <ActionButton
@@ -123,7 +129,6 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
         }}
         onLayout={getEndMeasurements}
         isFocused={routes['Program'].isFocused}
-        options={routes['Program'].options}
         style={{ ...styles.button }}
       />
     </View>

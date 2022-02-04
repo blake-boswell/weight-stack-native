@@ -2,11 +2,22 @@ import React from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
-const ActionButton = ({size=16, style, isFocused=false, color='#222'}) => {
+interface ActionButtonProps {
+  size?: number;
+  style?: any;
+  isFocused?: boolean;
+  color?: string;
+}
 
+const ActionButton = ({
+  size = 16,
+  style,
+  isFocused = false,
+  color = '#222',
+}: ActionButtonProps) => {
   const onPress = () => {
     console.log('press');
-  }
+  };
 
   return (
     <View style={{ ...styles.container, ...style }}>
@@ -17,9 +28,9 @@ const ActionButton = ({size=16, style, isFocused=false, color='#222'}) => {
         onPress={onPress}
         style={{ ...styles.button }}
       >
-        <View style={{alignItems: 'center'}}>
-          <View style={{alignItems: 'center'}}>
-            <Feather name="plus" size={size} color={isFocused ? blue : color} />
+        <View style={{ alignItems: 'center' }}>
+          <View style={{ alignItems: 'center' }}>
+            <Feather name="plus" size={size} color={color} />
           </View>
         </View>
       </Pressable>
@@ -46,7 +57,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -8,
     backgroundColor: '#fff',
-  }
-})
+  },
+});
 
 export default ActionButton;

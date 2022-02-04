@@ -1,19 +1,34 @@
 import React from 'react';
-import { StyleSheet, View, Pressable, Text } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Pressable,
+  Text,
+  GestureResponderEvent,
+  LayoutChangeEvent,
+} from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
 import { blue } from '../../../utils/Design';
 
+interface ProgramButtonProps {
+  size: number;
+  onPress: (event: GestureResponderEvent) => void;
+  onLayout: (event: LayoutChangeEvent) => void;
+  isFocused: boolean;
+  style: any;
+  color?: string;
+}
+
 const ProgramButton = ({
   size,
   onPress,
-  options,
   onLayout,
   isFocused,
   style,
   color = '#222',
-}) => {
-  const getContainerMeasurements = e => {
+}: ProgramButtonProps) => {
+  const getContainerMeasurements = (e: LayoutChangeEvent) => {
     onLayout(e);
   };
 
@@ -21,8 +36,6 @@ const ProgramButton = ({
     <Pressable
       accessibilityRole="button"
       accessibilityState={isFocused ? { selected: true } : {}}
-      accessibilityLabel={options.tabBarAccessibilityLabel}
-      testID={options.tabBarTestID}
       onPress={onPress}
       onLayout={getContainerMeasurements}
       style={{

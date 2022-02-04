@@ -1,19 +1,33 @@
 import React from 'react';
-import { StyleSheet, View, Pressable, Text } from 'react-native';
+import {
+  View,
+  Pressable,
+  Text,
+  GestureResponderEvent,
+  LayoutChangeEvent,
+} from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
 import { blue } from '../../../utils/Design';
 
+interface HomeButtonProps {
+  size: number;
+  onPress: (event: GestureResponderEvent) => void;
+  onLayout: (event: LayoutChangeEvent) => void;
+  isFocused: boolean;
+  style: any;
+  color?: string;
+}
+
 const HomeButton = ({
   size,
   onPress,
-  options,
   onLayout,
   isFocused,
   style,
   color = '#222',
-}) => {
-  const getContainerMeasurements = e => {
+}: HomeButtonProps) => {
+  const getContainerMeasurements = (e: LayoutChangeEvent) => {
     onLayout(e);
   };
 
@@ -21,8 +35,6 @@ const HomeButton = ({
     <Pressable
       accessibilityRole="button"
       accessibilityState={isFocused ? { selected: true } : {}}
-      accessibilityLabel={options.tabBarAccessibilityLabel}
-      testID={options.tabBarTestID}
       onPress={onPress}
       onLayout={getContainerMeasurements}
       style={{

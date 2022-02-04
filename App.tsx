@@ -39,7 +39,7 @@ export default function App() {
     <NavigationContainer>
       <View style={styles.container}>
         <Tab.Navigator
-          initialRouteName="Logs"
+          initialRouteName="Home"
           tabBar={(props: BottomTabBarProps) => <BottomTabBar {...props} />}
         >
           <Tab.Screen name="Home" component={Home} />
