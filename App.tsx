@@ -1,17 +1,18 @@
-import React, { useEffect, useState, Fragment } from 'react';
-import { AppLoading } from 'expo';
+import React, { useEffect, useState } from 'react';
+import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet, Text, ScrollView, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {
+  createBottomTabNavigator,
+  BottomTabBarProps,
+} from '@react-navigation/bottom-tabs';
 
 import BottomTabBar from './components/Navigation/BottomNav/BottomTabBar';
 import Home from './screens/Home/Home';
-import Logs from './screens/Logs/Logs';
 import Program from './screens/Program/Program';
-import Login from './screens/Authentication/Login';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -20,10 +21,8 @@ export default function App() {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    async function loading () {
+    async function loading() {
       await Font.loadAsync({
-        Roboto: require('native-base/Fonts/Roboto.ttf'),
-        Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
         ...Ionicons.font,
       });
       setIsReady(true);
@@ -36,11 +35,13 @@ export default function App() {
     return <AppLoading />;
   }
 
-
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <Tab.Navigator initialRouteName="Logs" tabBar={props => <BottomTabBar {...props} />}>
+        <Tab.Navigator
+          initialRouteName="Logs"
+          tabBar={(props: BottomTabBarProps) => <BottomTabBar {...props} />}
+        >
           <Tab.Screen name="Home" component={Home} />
           <Tab.Screen name="Program" component={Program} />
         </Tab.Navigator>
@@ -57,5 +58,4 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 8,
   },
-})
-
+});

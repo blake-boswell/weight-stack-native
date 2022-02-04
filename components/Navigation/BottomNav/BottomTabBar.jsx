@@ -4,7 +4,7 @@ import ActionButton from './ActionButton';
 import HomeButton from './HomeButton';
 import ProgramButton from './ProgramButton';
 import { blue } from '../../../utils/Design';
-import Animated, { Easing } from 'react-native-reanimated';
+import Animated, { EasingNode } from 'react-native-reanimated';
 
 const lineWidth = 75;
 const buttonSize = 38;
@@ -22,7 +22,7 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
     Animated.timing(lineAnim, {
       toValue: state.routes[state.index].name === 'Home' ? startX : endX,
       duration: 0,
-      easing: Easing.ease,
+      easing: EasingNode.ease,
     }).start();
   }, [startX]);
 
@@ -64,13 +64,13 @@ const BottomTabBar = ({ state, descriptors, navigation }) => {
       Animated.timing(lineAnim, {
         toValue: startX,
         duration: 200,
-        easing: Easing.ease,
+        easing: EasingNode.ease,
       }).start();
     } else {
       Animated.timing(lineAnim, {
         toValue: endX,
         duration: 200,
-        easing: Easing.ease,
+        easing: EasingNode.ease,
       }).start();
     }
   };
