@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AppLoading from 'expo-app-loading';
-import * as Font from 'expo-font';
+import { useFonts } from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -13,25 +13,18 @@ import {
 import BottomTabBar from './components/Navigation/BottomNav/BottomTabBar';
 import Home from './screens/Home/Home';
 import Program from './screens/Program/Program';
+import { Spacing } from './styles/core/layout';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  const [isReady, setIsReady] = useState(false);
+  const [fontsLoaded] = useFonts({
+    Roboto: require('./assets/fonts/Roboto-Regular.ttf'),
+    ...Ionicons.font,
+  });
 
-  useEffect(() => {
-    async function loading() {
-      await Font.loadAsync({
-        ...Ionicons.font,
-      });
-      setIsReady(true);
-    }
-
-    loading();
-  }, []);
-
-  if (!isReady) {
+  if (!fontsLoaded) {
     return <AppLoading />;
   }
 
@@ -56,6 +49,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    paddingTop: 8,
+    paddingTop: Spacing.xs,
   },
 });
