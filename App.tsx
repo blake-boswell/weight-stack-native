@@ -13,7 +13,7 @@ import {
 import BottomTabBar from './components/Navigation/BottomNav/BottomTabBar';
 import Home from './screens/Home/Home';
 import Program from './screens/Program/Program';
-import { Spacing } from './styles/core/layout';
+import { Spacing } from './styles/core';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -36,6 +36,8 @@ export default function App() {
           tabBar={(props: BottomTabBarProps) => <BottomTabBar {...props} />}
         >
           <Tab.Screen name="Home" component={Home} />
+          <Tab.Screen name="Workouts" component={Home} />
+          <Tab.Screen name="Stats" component={Program} />
           <Tab.Screen name="Program" component={Program} />
         </Tab.Navigator>
       </View>

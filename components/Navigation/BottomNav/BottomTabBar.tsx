@@ -1,15 +1,20 @@
 import React, { useMemo, useRef, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, LayoutChangeEvent } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  LayoutChangeEvent,
+  Animated,
+} from 'react-native';
 import ActionButton from './ActionButton';
-import HomeButton from './HomeButton';
-import ProgramButton from './ProgramButton';
-import { blue } from '../../../utils/Design';
-import Animated, { EasingNode } from 'react-native-reanimated';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { BottomTabDescriptor } from '@react-navigation/bottom-tabs/lib/typescript/src/types';
+import { Feather } from '@expo/vector-icons';
+import { Colors, Spacing } from '../../../styles/core';
+import NavButton from './NavButton';
+import Dumbell from '../../svg/Dumbell';
 
-const lineWidth = 75;
-const buttonSize = 38;
+const buttonWidth = 65;
 
 interface Routes {
   [name: string]: {
@@ -24,21 +29,16 @@ const BottomTabBar = ({
   descriptors,
   navigation,
 }: BottomTabBarProps) => {
-  const [startX, setStartX] = useState(0);
-  const [endX, setEndX] = useState(0);
-  const lineAnim = useRef(
-    new Animated.Value(
-      state.routes[state.index].name === 'Home' ? startX : endX,
-    ),
-  ).current;
+  const [lineStartX, setLineStartX] = useState(0);
+  const lineAnim = useRef(new Animated.Value(lineStartX)).current;
 
   useEffect(() => {
     Animated.timing(lineAnim, {
-      toValue: state.routes[state.index].name === 'Home' ? startX : endX,
+      toValue: lineStartX,
       duration: 0,
-      easing: EasingNode.ease,
+      useNativeDriver: true,
     }).start();
-  }, [startX]);
+  }, [lineStartX]);
 
   const routes = useMemo((): Routes => {
     let routes: Routes = {};
@@ -53,7 +53,7 @@ const BottomTabBar = ({
     return routes;
   }, [state, descriptors]);
 
-  const onNavBtnPress = (routeName: string) => {
+  const onNavBtnPress = (routeName: string, lineDestination: number) => {
     const isFocused = routes[routeName].isFocused;
     const target = routes[routeName].key;
 
@@ -67,31 +67,20 @@ const BottomTabBar = ({
       navigation.navigate(routeName);
     }
 
-    if (routeName === 'Home') {
-      Animated.timing(lineAnim, {
-        toValue: startX,
-        duration: 200,
-        easing: EasingNode.ease,
-      }).start();
-    } else {
-      Animated.timing(lineAnim, {
-        toValue: endX,
-        duration: 200,
-        easing: EasingNode.ease,
-      }).start();
+    Animated.spring(lineAnim, {
+      toValue: lineDestination,
+      useNativeDriver: true,
+      bounciness: 0,
+      speed: 20,
+    }).start();
+  };
+
+  const getStartMeasurements = (e: LayoutChangeEvent, isFocused: boolean) => {
+    if (isFocused) {
+      const { x, width } = e.nativeEvent.layout;
+      const offsetStart = x + width / 2 - buttonWidth / 2;
+      setLineStartX(offsetStart);
     }
-  };
-
-  const getStartMeasurements = (e: LayoutChangeEvent) => {
-    const { x, width } = e.nativeEvent.layout;
-    const offsetStart = width / 2 - lineWidth / 2;
-    setStartX(offsetStart);
-  };
-
-  const getEndMeasurements = (e: LayoutChangeEvent) => {
-    const { x, width } = e.nativeEvent.layout;
-    const offsetEnd = x + width / 2 - lineWidth / 2;
-    setEndX(offsetEnd);
   };
 
   return (
@@ -100,37 +89,102 @@ const BottomTabBar = ({
         style={{
           position: 'absolute',
           height: 2,
-          width: lineWidth,
+          width: buttonWidth,
           top: -3,
-          left: lineAnim,
+          transform: [{ translateX: lineAnim }],
           borderTopWidth: 2,
-          borderTopColor: blue,
+          borderTopColor: Colors.primary,
         }}
       ></Animated.View>
-      <HomeButton
-        size={buttonSize}
-        onPress={() => {
-          onNavBtnPress('Home');
+      <NavButton
+        onPress={(e, lineDestination) => {
+          onNavBtnPress('Home', lineDestination);
         }}
-        onLayout={getStartMeasurements}
+        onLayout={e => getStartMeasurements(e, routes['Home'].isFocused)}
         isFocused={routes['Home'].isFocused}
         style={{ ...styles.button }}
-      />
+      >
+        <Feather
+          name="home"
+          size={24}
+          color={routes['Home'].isFocused ? Colors.primary : Colors.text}
+        />
+        <Text
+          style={{
+            color: routes['Home'].isFocused ? Colors.primary : Colors.text,
+          }}
+        >
+          Home
+        </Text>
+      </NavButton>
+      <NavButton
+        onPress={(e, lineDestination) => {
+          onNavBtnPress('Workouts', lineDestination);
+        }}
+        onLayout={e => getStartMeasurements(e, routes['Workouts'].isFocused)}
+        isFocused={routes['Workouts'].isFocused}
+        style={{ ...styles.button }}
+      >
+        <Dumbell
+          size={24}
+          fill={routes['Workouts'].isFocused ? Colors.primary : Colors.text}
+        />
+        <Text
+          style={{
+            color: routes['Workouts'].isFocused ? Colors.primary : Colors.text,
+          }}
+        >
+          Workouts
+        </Text>
+      </NavButton>
       <ActionButton
-        size={buttonSize}
+        size={48}
         style={{
           ...styles.button,
         }}
       />
-      <ProgramButton
-        size={buttonSize}
-        onPress={() => {
-          onNavBtnPress('Program');
+      <NavButton
+        onPress={(e, lineDestination) => {
+          onNavBtnPress('Stats', lineDestination);
         }}
-        onLayout={getEndMeasurements}
+        onLayout={e => getStartMeasurements(e, routes['Stats'].isFocused)}
+        isFocused={routes['Stats'].isFocused}
+        style={{ ...styles.button }}
+      >
+        <Feather
+          name="bar-chart"
+          size={24}
+          color={routes['Stats'].isFocused ? Colors.primary : Colors.text}
+        />
+        <Text
+          style={{
+            color: routes['Stats'].isFocused ? Colors.primary : Colors.text,
+          }}
+        >
+          Stats
+        </Text>
+      </NavButton>
+      <NavButton
+        onPress={(e, lineDestination) => {
+          onNavBtnPress('Program', lineDestination);
+        }}
+        onLayout={e => getStartMeasurements(e, routes['Program'].isFocused)}
         isFocused={routes['Program'].isFocused}
         style={{ ...styles.button }}
-      />
+      >
+        <Feather
+          name="calendar"
+          size={24}
+          color={routes['Program'].isFocused ? Colors.primary : Colors.text}
+        />
+        <Text
+          style={{
+            color: routes['Program'].isFocused ? Colors.primary : Colors.text,
+          }}
+        >
+          Program
+        </Text>
+      </NavButton>
     </View>
   );
 };
@@ -138,18 +192,21 @@ const BottomTabBar = ({
 const styles = StyleSheet.create({
   bottomNav: {
     flexDirection: 'row',
-    paddingBottom: 25,
+    paddingBottom: Spacing.md,
+    paddingHorizontal: Spacing.sm,
     borderTopWidth: 2,
-    borderTopColor: '#E5E5E5',
+    borderTopColor: Colors.border,
     position: 'relative',
   },
   button: {
     flex: 1,
-    paddingTop: 6,
+    paddingTop: Spacing.xs,
+    width: buttonWidth,
   },
   actionButton: {
-    position: 'absolute',
-    left: '50%',
+    // position: 'absolute',
+    // left: '50%',
+    transform: [{ translateY: 8 }],
   },
 });
 

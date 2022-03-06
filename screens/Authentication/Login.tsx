@@ -5,7 +5,7 @@ import * as AuthSession from 'expo-auth-session';
 import jwtDecode from 'jwt-decode';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { Typography } from '../../styles/core/typography';
-import { Spacing } from '../../styles/core/layout';
+import { Spacing } from '../../styles/core';
 
 // You need to swap out the Auth0 client id and domain with the one from your Auth0 client.
 // In your Auth0 client, you need to also add a url to your authorized redirect urls.

@@ -1,8 +1,8 @@
-export const Colors = {
-  primary: '#414141',
-  accent: '#F25C54',
-  warning: '#F9C74F',
-  success: '#90BE6D',
-  background: '#E9ECEF',
-  backgroundLight: '#F8F9FA',
-};
+export const primary = '#F25C54';
+export const accent = '#414141';
+export const warning = '#F9C74F';
+export const success = '#90BE6D';
+export const background = '#E9ECEF';
+export const backgroundLight = '#F8F9FA';
+export const border = '#E5E5E5';
+export const text = '#212529';
