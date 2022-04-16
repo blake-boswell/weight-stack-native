@@ -5,18 +5,22 @@ import {
   Pressable,
   Animated,
   Text,
-  Easing,
+  NativeSyntheticEvent,
+  NativeTouchEvent,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-// import Dumbell from '../../../images/dumbell.svg';
 import Dumbell from '../../svg/Dumbell';
-import { Colors } from '../../../styles/core';
+import { Colors, Spacing } from '../../../styles/core';
 
 interface ActionButtonProps {
   size?: number;
   style?: any;
   isFocused?: boolean;
   color?: string;
+  onPress?: (
+    e: NativeSyntheticEvent<NativeTouchEvent>,
+    isMenuOpen: boolean,
+  ) => void;
 }
 
 const ActionButton = ({
@@ -24,13 +28,14 @@ const ActionButton = ({
   style,
   isFocused = false,
   color = Colors.text,
+  onPress,
 }: ActionButtonProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const rotateAnim = useRef(new Animated.Value(0)).current;
   const positionAnim = useRef(new Animated.ValueXY({ x: 0, y: -8 })).current;
 
-  const onPress = () => {
+  const handlePress = (e: NativeSyntheticEvent<NativeTouchEvent>) => {
     console.log('press');
     Animated.spring(rotateAnim, {
       toValue: isMenuOpen ? 0 : 1,
@@ -50,6 +55,9 @@ const ActionButton = ({
       useNativeDriver: true,
     }).start();
 
+    if (onPress) {
+      onPress(e, !isMenuOpen);
+    }
     setIsMenuOpen(prev => !prev);
   };
 
@@ -77,23 +85,22 @@ const ActionButton = ({
           style={{ ...styles.button }}
         >
           <View style={{ alignItems: 'center' }}>
-            <View style={{ alignItems: 'center' }}>
-              <Dumbell size={48} fill={Colors.accent} />
+            <View style={{ alignItems: 'center', padding: Spacing.xs }}>
+              <Dumbell size={size - 16} fill={Colors.accent} />
             </View>
           </View>
         </Pressable>
-        <Text>Create workout</Text>
+        <Text style={styles.buttonText}>Create workout</Text>
       </Animated.View>
       <Pressable
         accessibilityRole="button"
         accessibilityState={isFocused ? { selected: true } : {}}
         accessibilityLabel="add menu"
-        onPress={onPress}
+        onPress={handlePress}
         style={{
           height: size,
           width: size,
           ...styles.button,
-          ...styles.moveUp,
         }}
       >
         <View style={{ alignItems: 'center' }}>
@@ -127,9 +134,8 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     backgroundColor: Colors.backgroundLight,
   },
-  moveUp: {
-    position: 'absolute',
-    top: -8,
+  buttonText: {
+    textAlign: 'center',
   },
 });
 

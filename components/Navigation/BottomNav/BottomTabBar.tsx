@@ -5,6 +5,8 @@ import {
   Text,
   LayoutChangeEvent,
   Animated,
+  NativeSyntheticEvent,
+  NativeTouchEvent,
 } from 'react-native';
 import ActionButton from './ActionButton';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
@@ -13,6 +15,7 @@ import { Feather } from '@expo/vector-icons';
 import { Colors, Spacing } from '../../../styles/core';
 import NavButton from './NavButton';
 import Dumbell from '../../svg/Dumbell';
+import Overlay from '../../UI/Overlay/Overlay';
 
 const buttonWidth = 65;
 
@@ -29,6 +32,7 @@ const BottomTabBar = ({
   descriptors,
   navigation,
 }: BottomTabBarProps) => {
+  const [showOverlay, setShowOverlay] = useState(false);
   const [lineStartX, setLineStartX] = useState(0);
   const lineAnim = useRef(new Animated.Value(lineStartX)).current;
 
@@ -83,8 +87,16 @@ const BottomTabBar = ({
     }
   };
 
+  const handleActionButtonPress = (
+    e: NativeSyntheticEvent<NativeTouchEvent>,
+    isMenuOpen: boolean,
+  ) => {
+    setShowOverlay(isMenuOpen);
+  };
+
   return (
     <View style={styles.bottomNav}>
+      {showOverlay && <Overlay />}
       <Animated.View
         style={{
           position: 'absolute',
@@ -141,7 +153,9 @@ const BottomTabBar = ({
         size={48}
         style={{
           ...styles.button,
+          ...styles.actionButton,
         }}
+        onPress={handleActionButtonPress}
       />
       <NavButton
         onPress={(e, lineDestination) => {
@@ -206,7 +220,7 @@ const styles = StyleSheet.create({
   actionButton: {
     // position: 'absolute',
     // left: '50%',
-    transform: [{ translateY: 8 }],
+    transform: [{ translateY: -16 }],
   },
 });
 

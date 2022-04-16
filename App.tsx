@@ -14,6 +14,8 @@ import BottomTabBar from './components/Navigation/BottomNav/BottomTabBar';
 import Home from './screens/Home/Home';
 import Program from './screens/Program/Program';
 import { Spacing } from './styles/core';
+import PortalProvider from './components/Portal/PortalProvider';
+import PortalHost from './components/Portal/PortalHost';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -30,17 +32,20 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <View style={styles.container}>
-        <Tab.Navigator
-          initialRouteName="Home"
-          tabBar={(props: BottomTabBarProps) => <BottomTabBar {...props} />}
-        >
-          <Tab.Screen name="Home" component={Home} />
-          <Tab.Screen name="Workouts" component={Home} />
-          <Tab.Screen name="Stats" component={Program} />
-          <Tab.Screen name="Program" component={Program} />
-        </Tab.Navigator>
-      </View>
+      <PortalProvider>
+        <View style={styles.container}>
+          <Tab.Navigator
+            initialRouteName="Home"
+            tabBar={(props: BottomTabBarProps) => <BottomTabBar {...props} />}
+          >
+            <Tab.Screen name="Home" component={Home} />
+            <Tab.Screen name="Workouts" component={Home} />
+            <Tab.Screen name="Stats" component={Program} />
+            <Tab.Screen name="Program" component={Program} />
+          </Tab.Navigator>
+          <PortalHost name="root" />
+        </View>
+      </PortalProvider>
     </NavigationContainer>
   );
 }
