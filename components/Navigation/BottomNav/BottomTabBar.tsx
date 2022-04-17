@@ -94,6 +94,12 @@ const BottomTabBar = ({
     setShowOverlay(isMenuOpen);
   };
 
+  const handleCreateWorkout = (e: NativeSyntheticEvent<NativeTouchEvent>) => {
+    console.log('Creating workout...', navigation);
+    setShowOverlay(false);
+    navigation.navigate('Create Workout');
+  };
+
   return (
     <View style={styles.bottomNav}>
       {showOverlay && <Overlay />}
@@ -156,6 +162,7 @@ const BottomTabBar = ({
           ...styles.actionButton,
         }}
         onPress={handleActionButtonPress}
+        onCreateWorkoutPress={handleCreateWorkout}
       />
       <NavButton
         onPress={(e, lineDestination) => {

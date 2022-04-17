@@ -4,7 +4,7 @@ import { useFonts } from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   createBottomTabNavigator,
   BottomTabBarProps,
@@ -16,9 +16,24 @@ import Program from './screens/Program/Program';
 import { Spacing } from './styles/core';
 import PortalProvider from './components/Portal/PortalProvider';
 import PortalHost from './components/Portal/PortalHost';
+import CreateWorkout from './components/Workout/CreateWorkout';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+function MainTabs() {
+  return (
+    <Tab.Navigator
+      initialRouteName="Home"
+      tabBar={(props: BottomTabBarProps) => <BottomTabBar {...props} />}
+    >
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Workouts" component={Home} />
+      <Tab.Screen name="Stats" component={Program} />
+      <Tab.Screen name="Program" component={Program} />
+    </Tab.Navigator>
+  );
+}
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -34,15 +49,18 @@ export default function App() {
     <NavigationContainer>
       <PortalProvider>
         <View style={styles.container}>
-          <Tab.Navigator
-            initialRouteName="Home"
-            tabBar={(props: BottomTabBarProps) => <BottomTabBar {...props} />}
-          >
-            <Tab.Screen name="Home" component={Home} />
-            <Tab.Screen name="Workouts" component={Home} />
-            <Tab.Screen name="Stats" component={Program} />
-            <Tab.Screen name="Program" component={Program} />
-          </Tab.Navigator>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Main"
+              component={MainTabs}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Create Workout"
+              component={CreateWorkout}
+              options={{ animation: 'slide_from_bottom' }}
+            />
+          </Stack.Navigator>
           <PortalHost name="root" />
         </View>
       </PortalProvider>
