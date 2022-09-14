@@ -1,3 +1,5 @@
+import { Colors } from '.';
+
 const baseFontSize = 16;
 
 export const text = {
@@ -45,5 +47,8 @@ export const Typography = {
   },
   small: {
     ...text.sm,
+  },
+  link: {
+    color: Colors.blue,
   },
 };

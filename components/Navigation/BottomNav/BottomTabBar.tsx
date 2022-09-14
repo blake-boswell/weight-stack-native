@@ -5,17 +5,13 @@ import {
   Text,
   LayoutChangeEvent,
   Animated,
-  NativeSyntheticEvent,
-  NativeTouchEvent,
 } from 'react-native';
-import ActionButton from './ActionButton';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { BottomTabDescriptor } from '@react-navigation/bottom-tabs/lib/typescript/src/types';
 import { Feather } from '@expo/vector-icons';
 import { Colors, Spacing } from '../../../styles/core';
 import NavButton from './NavButton';
 import Dumbell from '../../svg/Dumbell';
-import Overlay from '../../UI/Overlay/Overlay';
 
 const buttonWidth = 65;
 
@@ -32,7 +28,6 @@ const BottomTabBar = ({
   descriptors,
   navigation,
 }: BottomTabBarProps) => {
-  const [showOverlay, setShowOverlay] = useState(false);
   const [lineStartX, setLineStartX] = useState(0);
   const lineAnim = useRef(new Animated.Value(lineStartX)).current;
 
@@ -87,125 +82,106 @@ const BottomTabBar = ({
     }
   };
 
-  const handleActionButtonPress = (
-    e: NativeSyntheticEvent<NativeTouchEvent>,
-    isMenuOpen: boolean,
-  ) => {
-    setShowOverlay(isMenuOpen);
-  };
-
-  const handleCreateWorkout = (e: NativeSyntheticEvent<NativeTouchEvent>) => {
-    console.log('Creating workout...', navigation);
-    setShowOverlay(false);
-    navigation.navigate('Create Workout');
-  };
-
   return (
-    <View style={styles.bottomNav}>
-      {showOverlay && <Overlay />}
-      <Animated.View
-        style={{
-          position: 'absolute',
-          height: 2,
-          width: buttonWidth,
-          top: -3,
-          transform: [{ translateX: lineAnim }],
-          borderTopWidth: 2,
-          borderTopColor: Colors.primary,
-        }}
-      ></Animated.View>
-      <NavButton
-        onPress={(e, lineDestination) => {
-          onNavBtnPress('Home', lineDestination);
-        }}
-        onLayout={e => getStartMeasurements(e, routes['Home'].isFocused)}
-        isFocused={routes['Home'].isFocused}
-        style={{ ...styles.button }}
-      >
-        <Feather
-          name="home"
-          size={24}
-          color={routes['Home'].isFocused ? Colors.primary : Colors.text}
-        />
-        <Text
+    <View>
+      <View style={styles.bottomNav}>
+        <Animated.View
           style={{
-            color: routes['Home'].isFocused ? Colors.primary : Colors.text,
+            position: 'absolute',
+            height: 2,
+            width: buttonWidth,
+            top: -3,
+            transform: [{ translateX: lineAnim }],
+            borderTopWidth: 2,
+            borderTopColor: Colors.primary,
           }}
-        >
-          Home
-        </Text>
-      </NavButton>
-      <NavButton
-        onPress={(e, lineDestination) => {
-          onNavBtnPress('Workouts', lineDestination);
-        }}
-        onLayout={e => getStartMeasurements(e, routes['Workouts'].isFocused)}
-        isFocused={routes['Workouts'].isFocused}
-        style={{ ...styles.button }}
-      >
-        <Dumbell
-          size={24}
-          fill={routes['Workouts'].isFocused ? Colors.primary : Colors.text}
-        />
-        <Text
-          style={{
-            color: routes['Workouts'].isFocused ? Colors.primary : Colors.text,
+        ></Animated.View>
+        <NavButton
+          onPress={(e, lineDestination) => {
+            onNavBtnPress('Home', lineDestination);
           }}
+          onLayout={e => getStartMeasurements(e, routes['Home'].isFocused)}
+          isFocused={routes['Home'].isFocused}
+          style={{ ...styles.button }}
         >
-          Workouts
-        </Text>
-      </NavButton>
-      <ActionButton
-        size={48}
-        style={{
-          ...styles.button,
-          ...styles.actionButton,
-        }}
-        onPress={handleActionButtonPress}
-        onCreateWorkoutPress={handleCreateWorkout}
-      />
-      <NavButton
-        onPress={(e, lineDestination) => {
-          onNavBtnPress('Stats', lineDestination);
-        }}
-        onLayout={e => getStartMeasurements(e, routes['Stats'].isFocused)}
-        isFocused={routes['Stats'].isFocused}
-        style={{ ...styles.button }}
-      >
-        <Feather
-          name="bar-chart"
-          size={24}
-          color={routes['Stats'].isFocused ? Colors.primary : Colors.text}
-        />
-        <Text
-          style={{
-            color: routes['Stats'].isFocused ? Colors.primary : Colors.text,
+          <Feather
+            name="home"
+            size={24}
+            color={routes['Home'].isFocused ? Colors.primary : Colors.text}
+          />
+          <Text
+            style={{
+              color: routes['Home'].isFocused ? Colors.primary : Colors.text,
+            }}
+          >
+            Home
+          </Text>
+        </NavButton>
+        <NavButton
+          onPress={(e, lineDestination) => {
+            onNavBtnPress('Workouts', lineDestination);
           }}
+          onLayout={e => getStartMeasurements(e, routes['Workouts'].isFocused)}
+          isFocused={routes['Workouts'].isFocused}
+          style={{ ...styles.button }}
         >
-          Stats
-        </Text>
-      </NavButton>
-      <NavButton
-        onPress={(e, lineDestination) => {
-          onNavBtnPress('Program', lineDestination);
-        }}
-        onLayout={e => getStartMeasurements(e, routes['Program'].isFocused)}
-        isFocused={routes['Program'].isFocused}
-        style={{ ...styles.button }}
-      >
-        <Feather
-          name="calendar"
-          size={24}
-          color={routes['Program'].isFocused ? Colors.primary : Colors.text}
-        />
-        <Text
-          style={{
-            color: routes['Program'].isFocused ? Colors.primary : Colors.text,
+          <Dumbell
+            size={24}
+            fill={routes['Workouts'].isFocused ? Colors.primary : Colors.text}
+          />
+          <Text
+            style={{
+              color: routes['Workouts'].isFocused
+                ? Colors.primary
+                : Colors.text,
+            }}
+          >
+            Workouts
+          </Text>
+        </NavButton>
+        <NavButton
+          onPress={(e, lineDestination) => {
+            onNavBtnPress('Stats', lineDestination);
           }}
+          onLayout={e => getStartMeasurements(e, routes['Stats'].isFocused)}
+          isFocused={routes['Stats'].isFocused}
+          style={{ ...styles.button }}
         >
-          Program
-        </Text>
-      </NavButton>
+          <Feather
+            name="bar-chart"
+            size={24}
+            color={routes['Stats'].isFocused ? Colors.primary : Colors.text}
+          />
+          <Text
+            style={{
+              color: routes['Stats'].isFocused ? Colors.primary : Colors.text,
+            }}
+          >
+            Stats
+          </Text>
+        </NavButton>
+        <NavButton
+          onPress={(e, lineDestination) => {
+            onNavBtnPress('Program', lineDestination);
+          }}
+          onLayout={e => getStartMeasurements(e, routes['Program'].isFocused)}
+          isFocused={routes['Program'].isFocused}
+          style={{ ...styles.button }}
+        >
+          <Feather
+            name="calendar"
+            size={24}
+            color={routes['Program'].isFocused ? Colors.primary : Colors.text}
+          />
+          <Text
+            style={{
+              color: routes['Program'].isFocused ? Colors.primary : Colors.text,
+            }}
+          >
+            Program
+          </Text>
+        </NavButton>
+      </View>
     </View>
   );
 };
@@ -213,11 +189,11 @@ const BottomTabBar = ({
 const styles = StyleSheet.create({
   bottomNav: {
     flexDirection: 'row',
-    paddingBottom: Spacing.md,
     paddingHorizontal: Spacing.sm,
     borderTopWidth: 2,
     borderTopColor: Colors.border,
     position: 'relative',
+    backgroundColor: Colors.surface,
   },
   button: {
     flex: 1,
