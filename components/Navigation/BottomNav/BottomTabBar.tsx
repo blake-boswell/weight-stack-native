@@ -12,16 +12,19 @@ import { Feather } from '@expo/vector-icons';
 import { Colors, Spacing } from '../../../styles/core';
 import NavButton from './NavButton';
 import Dumbell from '../../svg/Dumbell';
+import Routine from '../../svg/Routine';
 
 const buttonWidth = 65;
 
-interface Routes {
-  [name: string]: {
-    key: string;
-    isFocused: boolean;
-    options: BottomTabDescriptor;
-  };
+export type RouteNames = 'Routines' | 'Workouts' | 'Stats' | 'Program';
+
+export interface Route {
+  key: string;
+  isFocused: boolean;
+  options: BottomTabDescriptor | undefined;
 }
+
+type Routes = Record<RouteNames, Route>;
 
 const BottomTabBar = ({
   state,
@@ -39,26 +42,52 @@ const BottomTabBar = ({
     }).start();
   }, [lineStartX]);
 
-  const routes = useMemo((): Routes => {
-    let routes: Routes = {};
+  const routes = useMemo((): Routes | null => {
+    let routes: Routes = {
+      Routines: {
+        key: '',
+        isFocused: false,
+        options: undefined,
+      },
+      Workouts: {
+        key: '',
+        isFocused: false,
+        options: undefined,
+      },
+      Stats: {
+        key: '',
+        isFocused: false,
+        options: undefined,
+      },
+      Program: {
+        key: '',
+        isFocused: false,
+        options: undefined,
+      },
+    };
     state.routes.forEach((route, index) => {
       const { name, key } = route;
-      routes[name] = {
+      routes[name as RouteNames] = {
         key,
         isFocused: state.index === index,
         options: descriptors[key],
       };
     });
-    return routes;
+
+    if (routes) {
+      return routes;
+    } else {
+      return null;
+    }
   }, [state, descriptors]);
 
-  const onNavBtnPress = (routeName: string, lineDestination: number) => {
-    const isFocused = routes[routeName].isFocused;
-    const target = routes[routeName].key;
+  const onNavBtnPress = (routeName: RouteNames, lineDestination: number) => {
+    const isFocused = routes && routes[routeName].isFocused;
+    const target = routes && routes[routeName].key;
 
     const event = navigation.emit({
       type: 'tabPress',
-      target: target,
+      target: target || undefined,
       canPreventDefault: true,
     });
 
@@ -98,42 +127,63 @@ const BottomTabBar = ({
         ></Animated.View>
         <NavButton
           onPress={(e, lineDestination) => {
-            onNavBtnPress('Home', lineDestination);
+            onNavBtnPress('Routines', lineDestination);
           }}
-          onLayout={e => getStartMeasurements(e, routes['Home'].isFocused)}
-          isFocused={routes['Home'].isFocused}
+          onLayout={e =>
+            getStartMeasurements(
+              e,
+              routes ? routes['Routines'].isFocused : false,
+            )
+          }
+          isFocused={routes ? routes['Routines'].isFocused : false}
           style={{ ...styles.button }}
         >
-          <Feather
-            name="home"
+          <Routine
             size={24}
-            color={routes['Home'].isFocused ? Colors.primary : Colors.text}
+            color={
+              routes && routes['Routines'].isFocused
+                ? Colors.primary
+                : Colors.text
+            }
           />
           <Text
             style={{
-              color: routes['Home'].isFocused ? Colors.primary : Colors.text,
+              color:
+                routes && routes['Routines'].isFocused
+                  ? Colors.primary
+                  : Colors.text,
             }}
           >
-            Home
+            Routines
           </Text>
         </NavButton>
         <NavButton
           onPress={(e, lineDestination) => {
             onNavBtnPress('Workouts', lineDestination);
           }}
-          onLayout={e => getStartMeasurements(e, routes['Workouts'].isFocused)}
-          isFocused={routes['Workouts'].isFocused}
+          onLayout={e =>
+            getStartMeasurements(
+              e,
+              routes ? routes['Workouts'].isFocused : false,
+            )
+          }
+          isFocused={routes ? routes['Workouts'].isFocused : false}
           style={{ ...styles.button }}
         >
           <Dumbell
             size={24}
-            fill={routes['Workouts'].isFocused ? Colors.primary : Colors.text}
+            fill={
+              routes && routes['Workouts'].isFocused
+                ? Colors.primary
+                : Colors.text
+            }
           />
           <Text
             style={{
-              color: routes['Workouts'].isFocused
-                ? Colors.primary
-                : Colors.text,
+              color:
+                routes && routes['Workouts'].isFocused
+                  ? Colors.primary
+                  : Colors.text,
             }}
           >
             Workouts
@@ -143,18 +193,25 @@ const BottomTabBar = ({
           onPress={(e, lineDestination) => {
             onNavBtnPress('Stats', lineDestination);
           }}
-          onLayout={e => getStartMeasurements(e, routes['Stats'].isFocused)}
-          isFocused={routes['Stats'].isFocused}
+          onLayout={e =>
+            getStartMeasurements(e, routes ? routes['Stats'].isFocused : false)
+          }
+          isFocused={routes ? routes['Stats'].isFocused : false}
           style={{ ...styles.button }}
         >
           <Feather
             name="bar-chart"
             size={24}
-            color={routes['Stats'].isFocused ? Colors.primary : Colors.text}
+            color={
+              routes && routes['Stats'].isFocused ? Colors.primary : Colors.text
+            }
           />
           <Text
             style={{
-              color: routes['Stats'].isFocused ? Colors.primary : Colors.text,
+              color:
+                routes && routes['Stats'].isFocused
+                  ? Colors.primary
+                  : Colors.text,
             }}
           >
             Stats
@@ -164,18 +221,30 @@ const BottomTabBar = ({
           onPress={(e, lineDestination) => {
             onNavBtnPress('Program', lineDestination);
           }}
-          onLayout={e => getStartMeasurements(e, routes['Program'].isFocused)}
-          isFocused={routes['Program'].isFocused}
+          onLayout={e =>
+            getStartMeasurements(
+              e,
+              routes ? routes['Program'].isFocused : false,
+            )
+          }
+          isFocused={routes ? routes['Program'].isFocused : false}
           style={{ ...styles.button }}
         >
           <Feather
             name="calendar"
             size={24}
-            color={routes['Program'].isFocused ? Colors.primary : Colors.text}
+            color={
+              routes && routes['Program'].isFocused
+                ? Colors.primary
+                : Colors.text
+            }
           />
           <Text
             style={{
-              color: routes['Program'].isFocused ? Colors.primary : Colors.text,
+              color:
+                routes && routes['Program'].isFocused
+                  ? Colors.primary
+                  : Colors.text,
             }}
           >
             Program

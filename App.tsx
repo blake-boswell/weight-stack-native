@@ -33,10 +33,10 @@ const Tab = createBottomTabNavigator<RootTabParamList>();
 function MainTabs() {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="Routines"
       tabBar={(props: BottomTabBarProps) => <BottomTabBar {...props} />}
     >
-      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Routines" component={Home} />
       <Tab.Screen
         name="Workouts"
         component={Workout}
