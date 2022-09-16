@@ -259,6 +259,7 @@ const styles = StyleSheet.create({
   bottomNav: {
     flexDirection: 'row',
     paddingHorizontal: Spacing.sm,
+    paddingBottom: Spacing.lg,
     borderTopWidth: 2,
     borderTopColor: Colors.border,
     position: 'relative',
