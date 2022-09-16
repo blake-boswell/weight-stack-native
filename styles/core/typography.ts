@@ -1,4 +1,4 @@
-import { Colors } from '.';
+import * as Colors from './colors';
 
 const baseFontSize = 16;
 

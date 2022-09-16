@@ -26,6 +26,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Workout from './screens/Workout/Workout';
 import AddWorkoutButton from './components/Navigation/AddWorkoutButton';
+import NavigationHeader from './components/Navigation/Headers/NavigationHeader';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -36,16 +37,35 @@ function MainTabs() {
       initialRouteName="Routines"
       tabBar={(props: BottomTabBarProps) => <BottomTabBar {...props} />}
     >
-      <Tab.Screen name="Routines" component={Home} />
+      <Tab.Screen
+        name="Routines"
+        component={Home}
+        options={({ navigation }) => ({
+          header: NavigationHeader,
+        })}
+      />
       <Tab.Screen
         name="Workouts"
         component={Workout}
         options={({ navigation }) => ({
           headerRight: () => <AddWorkoutButton navigation={navigation} />,
+          header: NavigationHeader,
         })}
       />
-      <Tab.Screen name="Stats" component={Program} />
-      <Tab.Screen name="Program" component={Program} />
+      <Tab.Screen
+        name="Stats"
+        component={Program}
+        options={({ navigation }) => ({
+          header: NavigationHeader,
+        })}
+      />
+      <Tab.Screen
+        name="Program"
+        component={Program}
+        options={({ navigation }) => ({
+          header: NavigationHeader,
+        })}
+      />
     </Tab.Navigator>
   );
 }
