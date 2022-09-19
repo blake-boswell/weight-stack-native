@@ -2,6 +2,7 @@ export const white = '#FFFFFF';
 export const gray = '#ADB5BD';
 export const blue = '#277DA1';
 export const red = '#E5383B';
+export const darkGray = '#414141';
 
 export const primary = '#E5383B';
 export const accent = '#414141';
@@ -17,3 +18,4 @@ export const border = '#E5E5E5';
 export const inputBorder = gray;
 export const inputBorderActive = blue;
 export const text = '#212529';
+export const textMuted = { color: text, opacity: 0.77 };
