@@ -36,36 +36,15 @@ function MainTabs() {
     <Tab.Navigator
       initialRouteName="Routines"
       tabBar={(props: BottomTabBarProps) => <BottomTabBar {...props} />}
+      screenOptions={({ navigation }) => ({
+        header: NavigationHeader,
+      })}
+      backBehavior="none"
     >
-      <Tab.Screen
-        name="Routines"
-        component={Home}
-        options={({ navigation }) => ({
-          header: NavigationHeader,
-        })}
-      />
-      <Tab.Screen
-        name="Workouts"
-        component={Workout}
-        options={({ navigation }) => ({
-          headerRight: () => <AddWorkoutButton navigation={navigation} />,
-          header: NavigationHeader,
-        })}
-      />
-      <Tab.Screen
-        name="Stats"
-        component={Program}
-        options={({ navigation }) => ({
-          header: NavigationHeader,
-        })}
-      />
-      <Tab.Screen
-        name="Program"
-        component={Program}
-        options={({ navigation }) => ({
-          header: NavigationHeader,
-        })}
-      />
+      <Tab.Screen name="Routines" component={Home} />
+      <Tab.Screen name="Workouts" component={Workout} />
+      <Tab.Screen name="Stats" component={Program} />
+      <Tab.Screen name="Program" component={Program} />
     </Tab.Navigator>
   );
 }

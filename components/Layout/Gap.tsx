@@ -1,7 +1,7 @@
-import { View, ViewStyle } from 'react-native';
+import { View, ViewProps, ViewStyle } from 'react-native';
 import { Children } from 'react';
 
-export interface GapProps {
+export interface GapProps extends ViewProps {
   children: React.ReactNode;
   size?: number;
   horizontal?: boolean;
@@ -17,13 +17,14 @@ export function Gap({
   flex = horizontal ? 1 : undefined,
   divider,
   children,
+  ...rest
 }: GapProps) {
   const flexDirection = horizontal ? 'row' : 'column';
 
   const styleKey = horizontal ? 'width' : 'height';
 
   return (
-    <View style={[{ flexDirection }, style]}>
+    <View style={[{ flexDirection }, style]} {...rest}>
       {Children.map(children, (child, index) => {
         return (
           <>

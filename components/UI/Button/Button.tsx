@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Pressable,
   PressableProps,
@@ -10,15 +10,49 @@ import {
 import { Colors, Spacing } from '../../../styles/core';
 
 export interface ButtonProps extends PressableProps {
-  variant?: 'success' | 'danger' | 'info' | 'warning' | 'primary' | 'accent';
+  variant?:
+    | 'success'
+    | 'danger'
+    | 'info'
+    | 'warning'
+    | 'primary'
+    | 'accent'
+    | 'outline-success'
+    | 'outline-danger'
+    | 'outline-info'
+    | 'outline-warning'
+    | 'outline-primary'
+    | 'outline-accent';
+  round?: boolean;
 }
 
-const Button = ({ variant, children, style, ...rest }: ButtonProps) => {
+const Button = ({
+  variant,
+  children,
+  style,
+  onPressIn,
+  onPressOut,
+  round = false,
+  ...rest
+}: ButtonProps) => {
+  const isPressed = useRef(false);
+
   return (
     <Pressable
-      style={StyleSheet.flatten([
-        style,
-        StyleSheet.flatten<ViewStyle>([
+      onPressIn={e => {
+        if (onPressIn) {
+          onPressIn(e);
+        }
+        isPressed.current = true;
+      }}
+      onPressOut={e => {
+        if (onPressOut) {
+          onPressOut(e);
+        }
+        isPressed.current = false;
+      }}
+      style={StyleSheet.compose(
+        StyleSheet.compose<ViewStyle>(
           styles.button,
           {
             backgroundColor:
@@ -34,26 +68,67 @@ const Button = ({ variant, children, style, ...rest }: ButtonProps) => {
                 ? Colors.primary
                 : variant === 'accent'
                 ? Colors.accent
-                : 'none',
+                : 'transparent',
+            borderColor:
+              variant === 'success' || variant === 'outline-success'
+                ? Colors.success
+                : variant === 'danger' || variant === 'outline-danger'
+                ? Colors.danger
+                : variant === 'info' || variant === 'outline-info'
+                ? Colors.info
+                : variant === 'warning' || variant === 'outline-warning'
+                ? Colors.warning
+                : variant === 'primary' || variant === 'outline-primary'
+                ? Colors.primary
+                : variant === 'accent' || variant === 'outline-accent'
+                ? Colors.accent
+                : 'transparent',
+            borderWidth:
+              variant === 'outline-success' ||
+              variant === 'outline-danger' ||
+              variant === 'outline-info' ||
+              variant === 'outline-warning' ||
+              variant === 'outline-primary' ||
+              variant === 'outline-accent'
+                ? 1
+                : undefined,
+            borderRadius: round ? 50 : 4,
           },
-        ]),
-      ])}
+        ),
+        typeof style === 'function'
+          ? style({ pressed: isPressed.current })
+          : style,
+      )}
       {...rest}
     >
       <Text
-        style={StyleSheet.flatten<TextStyle>([
+        style={StyleSheet.compose<TextStyle>(
           styles.text,
           {
             color:
-              variant === 'success' ||
-              variant === 'danger' ||
-              variant === 'accent'
+              variant === 'outline-success'
+                ? Colors.success
+                : variant === 'outline-danger'
+                ? Colors.danger
+                : variant === 'outline-info'
+                ? Colors.info
+                : variant === 'outline-warning'
+                ? Colors.warning
+                : variant === 'outline-primary'
+                ? Colors.primary
+                : variant === 'outline-accent'
+                ? Colors.accent
+                : variant === 'success' ||
+                  variant === 'danger' ||
+                  variant === 'accent'
                 ? Colors.text
                 : Colors.white,
           },
-        ])}
+        )}
       >
-        {children}
+        {typeof children === 'function'
+          ? children({ pressed: isPressed.current })
+          : children}
       </Text>
     </Pressable>
   );
