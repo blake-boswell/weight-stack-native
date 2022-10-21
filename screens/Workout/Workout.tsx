@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import PillFilters from '../../components/Filter/PillFilters';
 
 const Workout = () => {
@@ -16,7 +16,7 @@ const Workout = () => {
     }
   };
   return (
-    <View>
+    <View style={styles.container}>
       <PillFilters
         filters={['Quads', 'Hamstrings', 'Bicep', 'Tricep', 'Back', 'Chest']}
         onTap={handleFilterTap}
@@ -25,5 +25,13 @@ const Workout = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+  },
+});
 
 export default Workout;

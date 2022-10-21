@@ -23,17 +23,6 @@ export interface PillFiltersProps {
 
 const PillFilters = ({ filters, onTap, onClear }: PillFiltersProps) => {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
-  const clearFadeAnim = useRef(new Animated.Value(0)).current;
-
-  // const handleTap = (e: GestureResponderEvent, filter: string) => {
-  //   console.log({
-  //     start: e.nativeEvent.pageX - e.nativeEvent.locationX,
-  //     end: 0,
-  //   });
-  //   onTap(filter);
-  //   setXStartPos(e.nativeEvent.pageX - e.nativeEvent.locationX);
-  //   setActiveFilter(filter);
-  // };
 
   const handleTap = (e: GestureResponderEvent, filter: string) => {
     console.log('Tap on ', filter, '. Active: ', activeFilter);
@@ -57,8 +46,9 @@ const PillFilters = ({ filters, onTap, onClear }: PillFiltersProps) => {
       style={styles.container}
       horizontal
       showsHorizontalScrollIndicator={false}
+      alwaysBounceHorizontal={false}
     >
-      <View style={styles.spacer} />
+      {activeFilter && <View style={{ height: 27, width: 0 }} />}
       {filters.map(filter => (
         <PillFilter
           key={filter}
@@ -68,38 +58,6 @@ const PillFilters = ({ filters, onTap, onClear }: PillFiltersProps) => {
           onTap={e => handleTap(e, filter)}
         />
       ))}
-      {/* <>
-          {activeFilter ? (
-            <Animated.View
-              style={{
-                transform: [
-                  {
-                    translateX: activeFilterXPos.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [xStartPos, 0],
-                    }),
-                  },
-                ],
-              }}
-            >
-              <Pressable onPress={e => handleClear()} style={styles.pill}>
-                <Text>{activeFilter}</Text>
-              </Pressable>
-            </Animated.View>
-          ) : (
-            <>
-              {filters.map(filter => (
-                <Pressable
-                  onPress={e => handleTap(e, filter)}
-                  key={filter}
-                  style={styles.pill}
-                >
-                  <Text>{filter}</Text>
-                </Pressable>
-              ))}
-            </>
-          )}
-        </> */}
       {/* {activeFilter && (
         <Animated.View
           style={{
@@ -126,7 +84,7 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'row',
-    position: 'relative',
+    paddingStart: 16,
   },
   pill: {
     marginRight: Spacing.xxs,

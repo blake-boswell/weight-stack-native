@@ -1,11 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Animated,
   GestureResponderEvent,
   LayoutChangeEvent,
   Pressable,
   PressableStateCallbackType,
-  ScrollView,
   StyleProp,
   StyleSheet,
   Text,
@@ -26,7 +25,9 @@ export interface PillFilterProps {
 const PillFilter = ({ name, activeFilter, onTap, style }: PillFilterProps) => {
   const [xStartPos, setXStartPos] = useState(0);
   const [isActive, setIsActive] = useState(activeFilter === name);
+  const [isFaded, setIsFaded] = useState(false);
   const activeFilterXPos = useRef(new Animated.Value(0)).current;
+  const opacity = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     if (isActive) {
@@ -37,61 +38,97 @@ const PillFilter = ({ name, activeFilter, onTap, style }: PillFilterProps) => {
     }
   }, [isActive]);
 
-  // useEffect(() => {
-  //   if (activeFilter && activeFilter !== name) {
-  //     Animated.timing(filterOpacity, {
-  //       toValue: 0,
-  //       delay: 50,
-  //       useNativeDriver: true,
-  //     }).start();
-  //   }
-  // }, [activeFilter]);
+  useEffect(() => {
+    if (activeFilter && !isActive) {
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: 0,
+        useNativeDriver: true,
+      }).start(() => setIsFaded(true));
+    } else if (!isActive) {
+      setIsFaded(false);
+      Animated.timing(opacity, {
+        toValue: 1,
+        delay: 50,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [activeFilter, isActive]);
 
   const assignStart = (e: LayoutChangeEvent) => {
-    // Subtract the left padding spacer of 16
-    setXStartPos(e.nativeEvent.layout.x - 16);
-    console.log('assigning start for ', name, ' at ', e.nativeEvent.layout.x);
+    setXStartPos(e.nativeEvent.layout.x);
   };
 
   const handleTap = (e: GestureResponderEvent) => {
-    console.log('It was a tap');
     onTap(e);
     setIsActive(true);
   };
 
   const handleClear = (e: GestureResponderEvent) => {
-    console.log('It was a clear');
+    onTap(e);
     Animated.spring(activeFilterXPos, {
       toValue: 0,
-      velocity: 10,
+      speed: 15,
+      bounciness: 4,
       useNativeDriver: true,
     }).start(() => {
       setIsActive(false);
-      onTap(e);
     });
   };
 
-  console.log(name, isActive, activeFilter);
-
   if (isActive) {
     return (
-      <Animated.View
-        style={{
-          transform: [
-            {
-              translateX: activeFilterXPos.interpolate({
-                inputRange: [0, 1],
-                outputRange: [xStartPos, 0],
-              }),
-            },
-          ],
-        }}
-      >
-        <Pressable
-          onPress={handleClear}
+      <>
+        <View
           style={
             typeof style === 'object'
-              ? { ...styles.pill, ...style, backgroundColor: 'red' }
+              ? { ...styles.pill, ...style, opacity: 0 }
+              : styles.pill
+          }
+        >
+          <Text>{name}</Text>
+        </View>
+        <Animated.View
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            transform: [
+              {
+                translateX: activeFilterXPos.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [xStartPos, 0],
+                }),
+              },
+            ],
+          }}
+        >
+          <Pressable
+            onPress={handleClear}
+            style={
+              typeof style === 'object'
+                ? { ...styles.pill, ...style }
+                : styles.pill
+            }
+          >
+            <Text>{name}</Text>
+          </Pressable>
+        </Animated.View>
+      </>
+    );
+  } else {
+    return (
+      <Animated.View style={{ opacity: opacity }} onLayout={assignStart}>
+        <Pressable
+          onPress={handleTap}
+          disabled={!!activeFilter}
+          style={
+            typeof style === 'object'
+              ? {
+                  ...styles.pill,
+                  ...style,
+                  display: isFaded ? 'none' : 'flex',
+                }
               : styles.pill
           }
         >
@@ -99,22 +136,6 @@ const PillFilter = ({ name, activeFilter, onTap, style }: PillFilterProps) => {
         </Pressable>
       </Animated.View>
     );
-  } else if (!activeFilter) {
-    return (
-      <Pressable
-        onPress={handleTap}
-        style={
-          typeof style === 'object'
-            ? { ...styles.pill, ...style, backgroundColor: 'green' }
-            : styles.pill
-        }
-        onLayout={assignStart}
-      >
-        <Text>{name}</Text>
-      </Pressable>
-    );
-  } else {
-    return null;
   }
 };
 
