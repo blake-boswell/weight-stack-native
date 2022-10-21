@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -7,12 +7,9 @@ import {
   View,
   Animated,
   GestureResponderEvent,
-  LayoutChangeEvent,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { Colors, Spacing } from '../../styles/core';
-import Button from '../UI/Button/Button';
-import { Gap } from '../Layout/Gap';
+import { Colors, Spacing, Typography } from '../../styles/core';
 import PillFilter from './PillFilter';
 
 export interface PillFiltersProps {
@@ -23,65 +20,75 @@ export interface PillFiltersProps {
 
 const PillFilters = ({ filters, onTap, onClear }: PillFiltersProps) => {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const clearOpacity = useRef(new Animated.Value(0)).current;
 
   const handleTap = (e: GestureResponderEvent, filter: string) => {
-    console.log('Tap on ', filter, '. Active: ', activeFilter);
     if (filter === activeFilter) {
-      setActiveFilter(null);
-      onClear();
+      handleClear();
     } else {
       setActiveFilter(filter);
       onTap(filter);
+      Animated.timing(clearOpacity, {
+        delay: 150,
+        toValue: 1,
+        useNativeDriver: true,
+      }).start();
     }
   };
 
   const handleClear = () => {
-    console.log('Clearing...');
     onClear();
     setActiveFilter(null);
+    Animated.timing(clearOpacity, {
+      toValue: 0,
+      useNativeDriver: true,
+    }).start();
   };
 
   return (
-    <ScrollView
-      style={styles.container}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      alwaysBounceHorizontal={false}
-    >
-      {activeFilter && <View style={{ height: 27, width: 0 }} />}
-      {filters.map(filter => (
-        <PillFilter
-          key={filter}
-          name={filter}
-          style={styles.pill}
-          activeFilter={activeFilter}
-          onTap={e => handleTap(e, filter)}
-        />
-      ))}
-      {/* {activeFilter && (
+    <View style={styles.container}>
+      <ScrollView
+        style={styles.scroll}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        alwaysBounceHorizontal={false}
+      >
+        {activeFilter && <View style={{ height: 27, width: 0 }} />}
+        {filters.map(filter => (
+          <PillFilter
+            key={filter}
+            name={filter}
+            style={styles.pill}
+            activeFilter={activeFilter}
+            onTap={e => handleTap(e, filter)}
+          />
+        ))}
+      </ScrollView>
+      {activeFilter && (
         <Animated.View
           style={{
             position: 'absolute',
-            right: 0,
-            opacity: clearFadeAnim,
+            right: 16,
+            opacity: clearOpacity,
           }}
         >
-          <Button
-            round
-            variant="outline-danger"
-            style={styles.clearButton}
-            onPress={() => handleClear()}
-          >
-            <Feather name="x" size={20} />
-          </Button>
+          <Pressable style={styles.clear} onPress={() => handleClear()}>
+            <Text style={styles.clearText}>Clear</Text>
+            <Feather name="x" size={20} style={styles.clearIcon} />
+          </Pressable>
         </Animated.View>
-      )} */}
-    </ScrollView>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+  },
+  scroll: {
     display: 'flex',
     flexDirection: 'row',
     paddingStart: 16,
@@ -95,9 +102,20 @@ const styles = StyleSheet.create({
   spacer: {
     width: 16,
   },
-  clearButton: {
-    paddingHorizontal: 4,
-    paddingVertical: 2,
+  clear: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 4,
+    color: Colors.danger,
+  },
+  clearText: {
+    color: Colors.danger,
+    fontSize: Typography.text.base.fontSize,
+  },
+  clearIcon: {
+    color: Colors.danger,
   },
 });
 

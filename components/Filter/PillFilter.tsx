@@ -30,13 +30,22 @@ const PillFilter = ({ name, activeFilter, onTap, style }: PillFilterProps) => {
   const opacity = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
-    if (isActive) {
+    if (name === activeFilter) {
       Animated.spring(activeFilterXPos, {
         toValue: 1,
         useNativeDriver: true,
       }).start();
+    } else if (isActive) {
+      Animated.spring(activeFilterXPos, {
+        toValue: 0,
+        speed: 15,
+        bounciness: 4,
+        useNativeDriver: true,
+      }).start(() => {
+        setIsActive(false);
+      });
     }
-  }, [isActive]);
+  }, [activeFilter, isActive]);
 
   useEffect(() => {
     if (activeFilter && !isActive) {
@@ -66,14 +75,6 @@ const PillFilter = ({ name, activeFilter, onTap, style }: PillFilterProps) => {
 
   const handleClear = (e: GestureResponderEvent) => {
     onTap(e);
-    Animated.spring(activeFilterXPos, {
-      toValue: 0,
-      speed: 15,
-      bounciness: 4,
-      useNativeDriver: true,
-    }).start(() => {
-      setIsActive(false);
-    });
   };
 
   if (isActive) {
