@@ -8,26 +8,25 @@ import { Gap } from '../../Layout/Gap';
 import Heading from '../../UI/Typography/Heading';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 
-const NavigationHeader = ({
+const WorkoutHeader = ({
   navigation,
   route,
   options,
 }: NativeStackHeaderProps) => {
+  const handleAdd = () => {
+    navigation.navigate('CreateWorkout');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.left}>
-        {navigation.canGoBack() && (
-          <Pressable>
-            <Feather name="chevron-left" size={24} />
-          </Pressable>
-        )}
-        <Heading size={3}>{route.name}</Heading>
+        <Heading size={3}>Workouts</Heading>
       </View>
       <Gap size={Spacing.sm} horizontal style={styles.right}>
         <Pressable>
           <Feather name="search" size={24} />
         </Pressable>
-        <Pressable>
+        <Pressable onPress={handleAdd}>
           <Feather name="plus" size={28} />
         </Pressable>
       </Gap>
@@ -57,4 +56,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NavigationHeader;
+export default WorkoutHeader;

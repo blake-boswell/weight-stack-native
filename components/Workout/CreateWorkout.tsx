@@ -1,4 +1,5 @@
 import {
+  CommonActions,
   CompositeNavigationProp,
   useNavigation,
 } from '@react-navigation/native';
@@ -12,39 +13,45 @@ import {
   View,
 } from 'react-native';
 import { Spacing, Typography } from '../../styles/core';
-import { RootStackParamList } from '../../types/Navigator/RootNavigator';
+import { WorkoutStackParamList } from '../../types/Navigator/RootNavigator';
 import Button from '../UI/Button/Button';
 import Input from '../UI/TextInput';
 
 const CreateWorkout = ({
   navigation,
   route,
-}: NativeStackScreenProps<RootStackParamList, 'CreateWorkout'>) => {
-  const [workoutName, setWorkoutName] = useState('Quads and Hamstrings');
+}: NativeStackScreenProps<
+  WorkoutStackParamList,
+  'CreateWorkout',
+  'WorkoutNavigator' | 'TabNav'
+>) => {
+  const [workoutName, setWorkoutName] = useState('New workout');
 
   return (
-    <View style={styles.container}>
-      <KeyboardAvoidingView>
-        <Text style={styles.heading}>Name your workout.</Text>
-        <Input
-          style={styles.input}
-          value={workoutName}
-          onChangeText={setWorkoutName}
-          autoFocus
-          selectTextOnFocus
-        />
-        <Pressable
-          onPress={() => {
-            navigation.navigate('CreateWorkoutFromTemplate');
-          }}
-        >
-          <Text style={styles.linkText}>Use a previous routine?</Text>
-        </Pressable>
-        <Button variant="info" style={styles.createButton}>
-          Create
-        </Button>
-      </KeyboardAvoidingView>
-    </View>
+    <KeyboardAvoidingView style={styles.container}>
+      <Text style={styles.heading}>Name your workout.</Text>
+      <Input
+        style={styles.input}
+        value={workoutName}
+        onChangeText={setWorkoutName}
+        autoFocus
+        selectTextOnFocus
+      />
+      <Pressable
+        onPress={() => {
+          const tabNav = navigation.getParent('TabNav');
+          if (tabNav) {
+            navigation.goBack();
+            setTimeout(() => tabNav.navigate('Routines'), 100);
+          }
+        }}
+      >
+        <Text style={styles.linkText}>Use a previous routine?</Text>
+      </Pressable>
+      <Button variant="info" style={styles.createButton}>
+        Create
+      </Button>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -72,6 +79,7 @@ const styles = StyleSheet.create({
   },
   createButton: {
     marginVertical: Spacing.xl,
+    width: '100%',
   },
 });
 

@@ -1,7 +1,6 @@
-export type RootStackParamList = {
+export type WorkoutStackParamList = {
   Main: undefined;
   CreateWorkout: undefined;
-  CreateWorkoutFromTemplate: undefined;
 };
 
 export type RootTabParamList = {

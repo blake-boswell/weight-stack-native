@@ -32,6 +32,14 @@ const BottomTabBar = ({
   navigation,
 }: BottomTabBarProps) => {
   const [lineStartX, setLineStartX] = useState(0);
+  const [lineDestinations, setLineDestinations] = useState<
+    Record<RouteNames, number>
+  >({
+    Routines: 0,
+    Workouts: 0,
+    Stats: 0,
+    Program: 0,
+  });
   const lineAnim = useRef(new Animated.Value(lineStartX)).current;
 
   useEffect(() => {
@@ -41,6 +49,16 @@ const BottomTabBar = ({
       useNativeDriver: true,
     }).start();
   }, [lineStartX]);
+
+  useEffect(() => {
+    const route = state.routeNames[state.index] as RouteNames;
+    Animated.spring(lineAnim, {
+      toValue: lineDestinations[route],
+      useNativeDriver: true,
+      bounciness: 0,
+      speed: 20,
+    }).start();
+  }, [state.index]);
 
   const routes = useMemo((): Routes | null => {
     let routes: Routes = {
@@ -94,21 +112,15 @@ const BottomTabBar = ({
     if (!isFocused && !event.defaultPrevented) {
       navigation.navigate(routeName);
     }
-
-    Animated.spring(lineAnim, {
-      toValue: lineDestination,
-      useNativeDriver: true,
-      bounciness: 0,
-      speed: 20,
-    }).start();
   };
 
-  const getStartMeasurements = (e: LayoutChangeEvent, isFocused: boolean) => {
-    if (isFocused) {
-      const { x, width } = e.nativeEvent.layout;
-      const offsetStart = x + width / 2 - buttonWidth / 2;
-      setLineStartX(offsetStart);
+  const getStartMeasurements = (e: LayoutChangeEvent, route: RouteNames) => {
+    const { x, width } = e.nativeEvent.layout;
+    const offset = x + width / 2 - buttonWidth / 2;
+    if (routes && routes[route].isFocused) {
+      setLineStartX(offset);
     }
+    setLineDestinations(prev => ({ ...prev, [route]: offset }));
   };
 
   return (
@@ -129,12 +141,7 @@ const BottomTabBar = ({
           onPress={(e, lineDestination) => {
             onNavBtnPress('Routines', lineDestination);
           }}
-          onLayout={e =>
-            getStartMeasurements(
-              e,
-              routes ? routes['Routines'].isFocused : false,
-            )
-          }
+          onLayout={e => getStartMeasurements(e, 'Routines')}
           isFocused={routes ? routes['Routines'].isFocused : false}
           style={{ ...styles.button }}
         >
@@ -161,12 +168,7 @@ const BottomTabBar = ({
           onPress={(e, lineDestination) => {
             onNavBtnPress('Workouts', lineDestination);
           }}
-          onLayout={e =>
-            getStartMeasurements(
-              e,
-              routes ? routes['Workouts'].isFocused : false,
-            )
-          }
+          onLayout={e => getStartMeasurements(e, 'Workouts')}
           isFocused={routes ? routes['Workouts'].isFocused : false}
           style={{ ...styles.button }}
         >
@@ -193,9 +195,7 @@ const BottomTabBar = ({
           onPress={(e, lineDestination) => {
             onNavBtnPress('Stats', lineDestination);
           }}
-          onLayout={e =>
-            getStartMeasurements(e, routes ? routes['Stats'].isFocused : false)
-          }
+          onLayout={e => getStartMeasurements(e, 'Stats')}
           isFocused={routes ? routes['Stats'].isFocused : false}
           style={{ ...styles.button }}
         >
@@ -221,12 +221,7 @@ const BottomTabBar = ({
           onPress={(e, lineDestination) => {
             onNavBtnPress('Program', lineDestination);
           }}
-          onLayout={e =>
-            getStartMeasurements(
-              e,
-              routes ? routes['Program'].isFocused : false,
-            )
-          }
+          onLayout={e => getStartMeasurements(e, 'Program')}
           isFocused={routes ? routes['Program'].isFocused : false}
           style={{ ...styles.button }}
         >
