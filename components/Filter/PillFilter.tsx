@@ -17,12 +17,19 @@ export interface PillFilterProps {
   name: string;
   activeFilter: string | null;
   onTap: (e: GestureResponderEvent) => void;
+  startOffset?: number;
   style:
     | StyleProp<ViewStyle>
     | ((state: PressableStateCallbackType) => StyleProp<ViewStyle>);
 }
 
-const PillFilter = ({ name, activeFilter, onTap, style }: PillFilterProps) => {
+const PillFilter = ({
+  name,
+  activeFilter,
+  onTap,
+  startOffset = 0,
+  style,
+}: PillFilterProps) => {
   const [xStartPos, setXStartPos] = useState(0);
   const [isActive, setIsActive] = useState(activeFilter === name);
   const [isFaded, setIsFaded] = useState(false);
@@ -98,7 +105,7 @@ const PillFilter = ({ name, activeFilter, onTap, style }: PillFilterProps) => {
               {
                 translateX: activeFilterXPos.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [xStartPos, 0],
+                  outputRange: [xStartPos, startOffset],
                 }),
               },
             ],

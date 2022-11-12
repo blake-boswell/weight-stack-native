@@ -54,6 +54,7 @@ const PillFilters = ({ filters, onTap, onClear }: PillFiltersProps) => {
         alwaysBounceHorizontal={false}
       >
         {activeFilter && <View style={{ height: 27, width: 0 }} />}
+        <View style={styles.spacer} />
         {filters.map(filter => (
           <PillFilter
             key={filter}
@@ -61,8 +62,10 @@ const PillFilters = ({ filters, onTap, onClear }: PillFiltersProps) => {
             style={styles.pill}
             activeFilter={activeFilter}
             onTap={e => handleTap(e, filter)}
+            startOffset={styles.spacer.width}
           />
         ))}
+        <View style={styles.spacer} />
       </ScrollView>
       {activeFilter && (
         <Animated.View
@@ -91,7 +94,6 @@ const styles = StyleSheet.create({
   scroll: {
     display: 'flex',
     flexDirection: 'row',
-    paddingStart: 16,
   },
   pill: {
     marginRight: Spacing.xxs,
