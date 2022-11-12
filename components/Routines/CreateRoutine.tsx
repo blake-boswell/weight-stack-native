@@ -13,27 +13,27 @@ import {
   View,
 } from 'react-native';
 import { Spacing, Typography } from '../../styles/core';
-import { WorkoutStackParamList } from '../../types/Navigator/RootNavigator';
+import { RoutineStackParamList } from '../../types/Navigator/RootNavigator';
 import Button from '../UI/Button/Button';
 import Input from '../UI/TextInput';
 
-const CreateWorkout = ({
+const CreateRoutine = ({
   navigation,
   route,
 }: NativeStackScreenProps<
-  WorkoutStackParamList,
-  'CreateWorkout',
-  'WorkoutNavigator' | 'TabNav'
+  RoutineStackParamList,
+  'CreateRoutine',
+  'RoutineNavigator' | 'TabNav'
 >) => {
-  const [workoutName, setWorkoutName] = useState('New workout');
+  const [routineName, setRoutineName] = useState('New routine');
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <Text style={styles.heading}>Name your workout.</Text>
+      <Text style={styles.heading}>Name your routine.</Text>
       <Input
         style={styles.input}
-        value={workoutName}
-        onChangeText={setWorkoutName}
+        value={routineName}
+        onChangeText={setRoutineName}
         autoFocus
         selectTextOnFocus
       />
@@ -51,7 +51,7 @@ const CreateWorkout = ({
       <Button
         variant="info"
         style={styles.createButton}
-        onPress={() => navigation.navigate('EditWorkout')}
+        onPress={() => navigation.navigate('EditRoutine')}
       >
         Create
       </Button>
@@ -87,4 +87,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateWorkout;
+export default CreateRoutine;

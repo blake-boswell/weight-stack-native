@@ -1,28 +1,29 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
+import Routines from '../../../screens/Routines/Routines';
 import Workout from '../../../screens/Workout/Workout';
 import { Colors } from '../../../styles/core';
-import { WorkoutStackParamList } from '../../../types/Navigator/RootNavigator';
-import CreateWorkout from '../../Workout/CreateWorkout';
-import EditWorkout from '../../Workout/EditWorkout';
+import { RoutineStackParamList } from '../../../types/Navigator/RootNavigator';
+import CreateRoutine from '../../Routines/CreateRoutine';
+import EditRoutine from '../../Routines/EditRoutine';
 import FormSheetHeader from '../Headers/FormSheetHeader';
-import WorkoutHeader from '../Headers/WorkoutHeader';
+import RoutineHeader from '../Headers/RoutineHeader';
 
-const Stack = createNativeStackNavigator<WorkoutStackParamList>();
+const Stack = createNativeStackNavigator<RoutineStackParamList>();
 
-const WorkoutNavigator = () => {
+const RoutineNavigator = () => {
   return (
-    <Stack.Navigator id="WorkoutNavigator">
+    <Stack.Navigator id="RoutineNavigator">
       <Stack.Screen
         name="Main"
         options={() => ({
-          header: WorkoutHeader,
+          header: RoutineHeader,
         })}
-        component={Workout}
+        component={Routines}
       />
       <Stack.Screen
-        name="CreateWorkout"
-        component={CreateWorkout}
+        name="CreateRoutine"
+        component={CreateRoutine}
         options={{
           animation: 'slide_from_bottom',
           presentation: 'formSheet',
@@ -32,8 +33,8 @@ const WorkoutNavigator = () => {
         }}
       />
       <Stack.Screen
-        name="EditWorkout"
-        component={EditWorkout}
+        name="EditRoutine"
+        component={EditRoutine}
         options={{
           animation: 'slide_from_bottom',
           presentation: 'fullScreenModal',
@@ -47,4 +48,4 @@ const WorkoutNavigator = () => {
   );
 };
 
-export default WorkoutNavigator;
+export default RoutineNavigator;
