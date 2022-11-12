@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import PillFilters from '../../components/Filter/PillFilters';
+import PillFilter from '../../components/UI/Filter/PillFilter';
 
 const Workout = () => {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
@@ -17,7 +17,7 @@ const Workout = () => {
   };
   return (
     <View style={styles.container}>
-      <PillFilters
+      <PillFilter
         filters={['Quads', 'Hamstrings', 'Bicep', 'Tricep', 'Back', 'Chest']}
         onTap={handleFilterTap}
         onClear={() => setActiveFilter(null)}

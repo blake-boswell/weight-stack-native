@@ -9,16 +9,16 @@ import {
   GestureResponderEvent,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { Colors, Spacing, Typography } from '../../styles/core';
-import PillFilter from './PillFilter';
+import { Colors, Spacing, Typography } from '../../../../styles/core';
+import PillFilterBadge from './PillFilterBadge';
 
-export interface PillFiltersProps {
+export interface PillFilterProps {
   filters: string[];
   onTap: (filter: string) => void;
   onClear: () => void;
 }
 
-const PillFilters = ({ filters, onTap, onClear }: PillFiltersProps) => {
+const PillFilter = ({ filters, onTap, onClear }: PillFilterProps) => {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const clearOpacity = useRef(new Animated.Value(0)).current;
 
@@ -56,7 +56,7 @@ const PillFilters = ({ filters, onTap, onClear }: PillFiltersProps) => {
         {activeFilter && <View style={{ height: 27, width: 0 }} />}
         <View style={styles.spacer} />
         {filters.map(filter => (
-          <PillFilter
+          <PillFilterBadge
             key={filter}
             name={filter}
             style={styles.pill}
@@ -121,4 +121,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PillFilters;
+export default PillFilter;

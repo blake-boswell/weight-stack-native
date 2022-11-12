@@ -11,9 +11,9 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import { Colors } from '../../styles/core';
+import { Colors } from '../../../../styles/core';
 
-export interface PillFilterProps {
+export interface PillFilterBadgeProps {
   name: string;
   activeFilter: string | null;
   onTap: (e: GestureResponderEvent) => void;
@@ -23,13 +23,13 @@ export interface PillFilterProps {
     | ((state: PressableStateCallbackType) => StyleProp<ViewStyle>);
 }
 
-const PillFilter = ({
+const PillFilterBadge = ({
   name,
   activeFilter,
   onTap,
   startOffset = 0,
   style,
-}: PillFilterProps) => {
+}: PillFilterBadgeProps) => {
   const [xStartPos, setXStartPos] = useState(0);
   const [isActive, setIsActive] = useState(activeFilter === name);
   const [isFaded, setIsFaded] = useState(false);
@@ -165,4 +165,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PillFilter;
+export default PillFilterBadge;
