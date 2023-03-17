@@ -6,6 +6,7 @@ import { WorkoutStackParamList } from '../../../types/Navigator/RootNavigator';
 import CreateWorkout from '../../Workout/CreateWorkout';
 import EditWorkout from '../../Workout/EditWorkout';
 import FormSheetHeader from '../Headers/FormSheetHeader';
+import EditWorkoutHeader from '../Headers/Workout/EditWorkoutHeader';
 import WorkoutHeader from '../Headers/WorkoutHeader';
 
 const Stack = createNativeStackNavigator<WorkoutStackParamList>();
@@ -26,7 +27,6 @@ const WorkoutNavigator = () => {
         options={{
           animation: 'slide_from_bottom',
           presentation: 'formSheet',
-
           header: FormSheetHeader,
           contentStyle: { backgroundColor: Colors.background },
         }}
@@ -34,14 +34,15 @@ const WorkoutNavigator = () => {
       <Stack.Screen
         name="EditWorkout"
         component={EditWorkout}
-        options={{
+        options={({ route }) => ({
+          headerTitle: route.params.workoutName,
           animation: 'slide_from_bottom',
           presentation: 'fullScreenModal',
 
           header: FormSheetHeader,
           headerShown: false,
           contentStyle: { backgroundColor: Colors.background },
-        }}
+        })}
       />
     </Stack.Navigator>
   );

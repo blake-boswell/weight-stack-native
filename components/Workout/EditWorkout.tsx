@@ -1,3 +1,4 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useRef } from 'react';
 import {
   Animated,
@@ -7,8 +8,13 @@ import {
   Text,
   View,
 } from 'react-native';
+import { WorkoutStackParamList } from '../../types/Navigator/RootNavigator';
 
-const EditWorkout = () => {
+const EditWorkout = ({
+  route,
+}: NativeStackScreenProps<WorkoutStackParamList, 'EditWorkout'>) => {
+  const workoutName = route.params.workoutName;
+
   const pan = useRef(new Animated.Value(0)).current;
   const panResponder = React.useRef(
     PanResponder.create({
@@ -65,9 +71,7 @@ const EditWorkout = () => {
       }}
     >
       <SafeAreaView style={styles.header} {...panResponder.panHandlers}>
-        <Text>V</Text>
-        <Text>I am the header</Text>
-        <Text>...</Text>
+        <Text>{workoutName}</Text>
       </SafeAreaView>
       <View style={styles.body}></View>
     </Animated.View>

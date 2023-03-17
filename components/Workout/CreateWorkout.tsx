@@ -12,10 +12,12 @@ import {
   Text,
   View,
 } from 'react-native';
+import useWorkoutStore from '../../stores/workout/WorkoutStore';
 import { Spacing, Typography } from '../../styles/core';
 import { WorkoutStackParamList } from '../../types/Navigator/RootNavigator';
 import Button from '../UI/Button/Button';
 import Input from '../UI/TextInput';
+import Workout from './Workout';
 
 const CreateWorkout = ({
   navigation,
@@ -26,6 +28,13 @@ const CreateWorkout = ({
   'WorkoutNavigator' | 'TabNav'
 >) => {
   const [workoutName, setWorkoutName] = useState('New workout');
+  const setActiveWorkout = useWorkoutStore(state => state.setActiveWorkout);
+
+  const handleCreate = () => {
+    const newWorkout = new Workout(workoutName);
+    setActiveWorkout(newWorkout);
+    navigation.replace('EditWorkout', { workoutName });
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -48,11 +57,7 @@ const CreateWorkout = ({
       >
         <Text style={styles.linkText}>Use a previous routine?</Text>
       </Pressable>
-      <Button
-        variant="info"
-        style={styles.createButton}
-        onPress={() => navigation.navigate('EditWorkout')}
-      >
+      <Button variant="info" style={styles.createButton} onPress={handleCreate}>
         Create
       </Button>
     </KeyboardAvoidingView>

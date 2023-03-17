@@ -1,7 +1,9 @@
 export type WorkoutStackParamList = {
   Main: undefined;
   CreateWorkout: undefined;
-  EditWorkout: undefined;
+  EditWorkout: {
+    workoutName: string;
+  };
 };
 
 export type RoutineStackParamList = {
