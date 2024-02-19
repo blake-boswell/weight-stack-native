@@ -27,6 +27,10 @@ const CreateRoutine = ({
 >) => {
   const [routineName, setRoutineName] = useState('New routine');
 
+  const handleCreate = () => {
+    navigation.replace('EditRoutine', { name: routineName});
+  };
+
   return (
     <KeyboardAvoidingView style={styles.container}>
       <Text style={styles.heading}>Name your routine.</Text>
@@ -51,7 +55,7 @@ const CreateRoutine = ({
       <Button
         variant="info"
         style={styles.createButton}
-        onPress={() => navigation.navigate('EditRoutine')}
+        onPress={handleCreate}
       >
         Create
       </Button>
