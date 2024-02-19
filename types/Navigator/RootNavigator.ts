@@ -9,7 +9,9 @@ export type WorkoutStackParamList = {
 export type RoutineStackParamList = {
   Main: undefined;
   CreateRoutine: undefined;
-  EditRoutine: undefined;
+  EditRoutine: {
+    name: string;
+  };
 };
 
 export type RootTabParamList = {
@@ -17,4 +19,9 @@ export type RootTabParamList = {
   Workouts: undefined;
   Stats: undefined;
   Program: undefined;
+};
+
+export type RootStackParamList = {
+  Main: undefined;
+  ActiveWorkout: undefined;
 };

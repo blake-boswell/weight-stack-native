@@ -9,10 +9,10 @@ import {
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { BottomTabDescriptor } from '@react-navigation/bottom-tabs/lib/typescript/src/types';
 import { Feather } from '@expo/vector-icons';
-import { Colors, Spacing } from '../../../styles/core';
+import { Colors, Spacing } from '../../../../styles/core';
 import NavButton from './NavButton';
-import Dumbell from '../../svg/Dumbell';
-import Routine from '../../svg/Routine';
+import Dumbell from '../../../svg/Dumbell';
+import Routine from '../../../svg/Routine';
 
 const buttonWidth = 65;
 
@@ -31,6 +31,7 @@ const BottomTabBar = ({
   descriptors,
   navigation,
 }: BottomTabBarProps) => {
+  console.log({ state, descriptors, navigation });
   const [lineStartX, setLineStartX] = useState(0);
   const [lineDestinations, setLineDestinations] = useState<
     Record<RouteNames, number>
@@ -41,6 +42,15 @@ const BottomTabBar = ({
     Program: 0,
   });
   const lineAnim = useRef(new Animated.Value(lineStartX)).current;
+
+  const tabBarStyles = useMemo(() => {
+    const routeKey = state.routes[state.index].key;
+    const barStyles = descriptors[routeKey].options.tabBarStyle;
+    if (barStyles) {
+      return barStyles;
+    }
+    return undefined;
+  }, [state.routes, state.key, descriptors]);
 
   useEffect(() => {
     Animated.timing(lineAnim, {
@@ -124,7 +134,7 @@ const BottomTabBar = ({
   };
 
   return (
-    <View>
+    <Animated.View style={tabBarStyles}>
       <View style={styles.bottomNav}>
         <Animated.View
           style={{
@@ -246,7 +256,7 @@ const BottomTabBar = ({
           </Text>
         </NavButton>
       </View>
-    </View>
+    </Animated.View>
   );
 };
 

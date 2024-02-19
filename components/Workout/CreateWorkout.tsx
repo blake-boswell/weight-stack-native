@@ -10,14 +10,11 @@ import {
   Pressable,
   StyleSheet,
   Text,
-  View,
 } from 'react-native';
-import useWorkoutStore from '../../stores/workout/WorkoutStore';
 import { Spacing, Typography } from '../../styles/core';
 import { WorkoutStackParamList } from '../../types/Navigator/RootNavigator';
 import Button from '../UI/Button/Button';
 import Input from '../UI/TextInput';
-import Workout from './Workout';
 
 const CreateWorkout = ({
   navigation,
@@ -28,11 +25,8 @@ const CreateWorkout = ({
   'WorkoutNavigator' | 'TabNav'
 >) => {
   const [workoutName, setWorkoutName] = useState('New workout');
-  const setActiveWorkout = useWorkoutStore(state => state.setActiveWorkout);
 
   const handleCreate = () => {
-    const newWorkout = new Workout(workoutName);
-    setActiveWorkout(newWorkout);
     navigation.replace('EditWorkout', { workoutName });
   };
 

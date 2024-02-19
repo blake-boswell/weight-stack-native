@@ -5,7 +5,7 @@ import {
   GestureResponderEvent,
   LayoutChangeEvent,
 } from 'react-native';
-import { Colors } from '../../../styles/core';
+import { Colors } from '../../../../styles/core';
 
 interface NavButtonProps {
   children: JSX.Element | JSX.Element[];

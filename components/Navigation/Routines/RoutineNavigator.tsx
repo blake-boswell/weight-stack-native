@@ -30,19 +30,24 @@ const RoutineNavigator = () => {
 
           header: FormSheetHeader,
           contentStyle: { backgroundColor: Colors.background },
+          gestureDirection: 'vertical',
+          gestureEnabled: true,
         }}
       />
       <Stack.Screen
         name="EditRoutine"
         component={EditRoutine}
-        options={{
+        options={({ route }) => ({
+          headerTitle: route.params.name,
           animation: 'slide_from_bottom',
-          presentation: 'fullScreenModal',
+          // presentation: 'fullScreenModal',
 
           header: FormSheetHeader,
           headerShown: false,
           contentStyle: { backgroundColor: Colors.background },
-        }}
+          gestureDirection: 'vertical',
+          gestureEnabled: true,
+        })}
       />
     </Stack.Navigator>
   );

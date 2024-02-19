@@ -9,8 +9,8 @@ import {
   NativeTouchEvent,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import Dumbell from '../../svg/Dumbell';
-import { Colors, Spacing } from '../../../styles/core';
+import Dumbell from '../../../svg/Dumbell';
+import { Colors, Spacing } from '../../../../styles/core';
 
 interface ActionButtonProps {
   size?: number;

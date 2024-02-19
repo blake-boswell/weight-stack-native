@@ -3,20 +3,11 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import {
-  createBottomTabNavigator,
-  BottomTabBarProps,
-} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import BottomTabBar from './components/Navigation/BottomNav/BottomTabBar';
-import Program from './screens/Program/Program';
-import PortalProvider from './components/Portal/PortalProvider';
-import PortalHost from './components/Portal/PortalHost';
 import { RootTabParamList } from './types/Navigator/RootNavigator';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import WorkoutNavigator from './components/Navigation/Workout/WorkoutNavigator';
-import RoutineNavigator from './components/Navigation/Routines/RoutineNavigator';
+import RootNavigator from './components/Navigation/RootNavigator';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
@@ -60,27 +51,9 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <PortalProvider>
-        <SafeAreaView onLayout={onLayoutRootView} style={styles.container}>
-          <Tab.Navigator
-            id="TabNav"
-            initialRouteName="Routines"
-            tabBar={(props: BottomTabBarProps) => <BottomTabBar {...props} />}
-            screenOptions={({ navigation }) => ({
-              headerShown: false,
-            })}
-            backBehavior="none"
-          >
-            <Tab.Screen name="Routines" component={RoutineNavigator} />
-            <Tab.Screen name="Workouts" component={WorkoutNavigator} />
-            <Tab.Screen name="Stats" component={Program} />
-            <Tab.Screen name="Program" component={Program} />
-          </Tab.Navigator>
-          <PortalHost name="root" />
-        </SafeAreaView>
-      </PortalProvider>
-    </NavigationContainer>
+    <SafeAreaView onLayout={onLayoutRootView} style={styles.container}>
+      <RootNavigator />
+    </SafeAreaView>
   );
 }
 
