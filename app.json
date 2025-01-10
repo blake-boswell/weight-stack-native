@@ -37,6 +37,10 @@
         "wasm",
         "svg"
       ]
-    }
+    },
+    "plugins": [
+      "expo-font",
+      "expo-secure-store"
+    ]
   }
 }
